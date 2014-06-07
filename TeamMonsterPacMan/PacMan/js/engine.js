@@ -67,6 +67,8 @@
                 })
         }
 
+        // Needs to be reformed or totali changed depending on how we will input the level
+        // For now works with hardcoded levels, and maybe some drawing changes are much needed
         this.renderLevel = function (level) {
             var step = 20;
             for (i = 0; i < 420; i += step) {
