@@ -85,8 +85,12 @@
         // For now works with hardcoded levels, and maybe some drawing changes are much needed
         this.renderLevel = function (level, dots) {
             var step = 20;
-            for (i = 0; i < 420; i += step) {
-                for (j = 0; j < 420; j += step) {
+            for (i = 0; i < level.length; i += step) {
+                for (j = 0; j < level.length; j += step) {
+                    if (level[i][j] === 'empty') {
+                        continue;
+                    }
+
                     if (level[i][j]) {
                         paper.rect(j, i, step, step)
                             .attr({
