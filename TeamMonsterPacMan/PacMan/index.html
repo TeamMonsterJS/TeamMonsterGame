@@ -21,6 +21,12 @@
         var player = new PacMan(new Position(0, 20), 'player', 'up');
         //engine.renderer.renderPacDots([new PacDot(new Position(110, 110)), new PacDot(new Position(120, 120)), new PacDot(new Position(140, 140),true)]);
         engine.renderer.renderLevel(level, dots);
+        engine.renderer.renderGhost(obj);
+        console.log('');
+        console.log('');
+        console.log('');
+        obj.move();
+        engine.renderer.renderGhost(obj);
         engine.renderer.renderPacDots(dots);
         engine.renderer.renderPacMan(player);
 

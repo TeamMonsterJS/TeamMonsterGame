@@ -33,7 +33,7 @@
             });
 
         this.renderGhost = function (ghost) {
-            paper.image(ghost.appearance, ghost.position.x, ghost.position.y, 50, 50);
+            ghost.svgForm = paper.image(ghost.appearance, ghost.position.x, ghost.position.y, 20, 20);
         }
 
         // TODO: Needs to be made better is now just for rendering a sample player
@@ -106,4 +106,6 @@
     }
 
     this.renderer = new Renderer();
+
+
 }

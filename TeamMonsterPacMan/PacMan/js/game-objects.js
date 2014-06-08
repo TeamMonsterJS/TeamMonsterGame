@@ -79,6 +79,39 @@ function Ghost(position, name, direction, imgNumber) {
     proto(Ghost.prototype).constructor.call(this, position, name, direction);
     this.appearance = 'images/ghost-' + imgNumber + '.png';
     this.state = 'enemy';
+    this.svgForm = false;
+
+    this.move = function () {
+        var stepX = 20,
+            stepY = 20;
+
+        switch (this.direction) {
+            case 'left':
+                stepX *= -1;
+                stepY = 0;
+                break;
+            case 'up':
+                stepX = 0;
+                stepY *= -1;
+                break;
+            case 'right':
+                stepY = 0;
+                break;
+            case 'down':
+                stepX = 0;
+                break;
+        }
+
+        if (this.svgForm) {
+            this.svgForm.animate({
+                x: this.svgForm.attr('x') + stepX,
+                y: this.svgForm.attr('y') + stepY,
+            }, 1000);
+        }
+
+        this.position.x = this.position += stepX;
+        this.position.y = this.position += stepY;
+    };
 }
 Ghost.prototype = Object.create(MovingObject.prototype);
 
@@ -100,12 +133,12 @@ PacMan.prototype.constructor = PacMan;
 
 // ---------------- Levels ------------------------
 // Making matrix for level
-function makeMatrix(rows,cols,step) {
+function makeMatrix(rows, cols, step) {
     rows *= step;
     cols *= step;
 
     var matrix = new Array(rows);
-    for (var i = 0; i < rows; i+=step) {
+    for (var i = 0; i < rows; i += step) {
         matrix[i] = new Array(cols);
     }
 
