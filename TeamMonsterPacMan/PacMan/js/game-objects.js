@@ -106,11 +106,11 @@ function Ghost(position, name, direction, imgNumber) {
             this.svgForm.animate({
                 x: this.svgForm.attr('x') + stepX,
                 y: this.svgForm.attr('y') + stepY,
-            }, 1000);
+            }, 500);
         }
 
-        this.position.x = this.position += stepX;
-        this.position.y = this.position += stepY;
+        this.position.x = this.position.x + stepX;
+        this.position.y = this.position.y + stepY;
     };
 }
 Ghost.prototype = Object.create(MovingObject.prototype);

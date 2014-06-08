@@ -16,19 +16,93 @@
         var dots = [];
         var level = level1(makeMatrix(28, 28, 20));
 
-        var obj = new Ghost(new Position(150, 150), 'ghost', 'up', 1);
+        var obj = new Ghost(new Position(140, 160), 'ghost', 'left', 1);
         var engine = new Engine(paper);
         var player = new PacMan(new Position(0, 20), 'player', 'up');
         //engine.renderer.renderPacDots([new PacDot(new Position(110, 110)), new PacDot(new Position(120, 120)), new PacDot(new Position(140, 140),true)]);
         engine.renderer.renderLevel(level, dots);
         engine.renderer.renderGhost(obj);
-        console.log('');
+        console.log(obj.position);
         console.log('');
         console.log('');
         obj.move();
-        engine.renderer.renderGhost(obj);
+        console.log(obj.position);
+        console.log('');
+        console.log('');
         engine.renderer.renderPacDots(dots);
         engine.renderer.renderPacMan(player);
+
+        // while(true) for ghost AI tests after that will be made to function and added to engine
+        function getRandomOtherDirection() {
+            var randomDirection = Math.floor(Math.random() * 4);
+
+            switch (randomDirection) {
+                case 1:
+                    randomDirection = 'left';
+                    break;
+                case 2:
+                    randomDirection = 'up';
+                    break;
+                case 3:
+                    randomDirection = 'right';
+                    break;
+                case 4:
+                    randomDirection = 'down';
+                    break;
+            }
+
+            //for (var i = 0; i < arguments.length; i++) {
+            //    if (randomDirection === arguments[i]) {
+            //        getRandomOtherDirection(arguments);
+            //        return randomDirection;
+            //    }
+            //}
+
+            return randomDirection;
+        }
+
+        function posibleStep(nextX, nextY) {
+            if (level[nextX][nextY] && level[nextX][nextY] !== 'empty') {
+                return false;
+            }
+            return true;
+        }
+
+        function ghostAIMovements() {
+            var step = 20;
+            var direction = obj.direction;
+            var nextX = obj.position.x;
+            var nextY = obj.position.y;
+
+            switch (direction) {
+                case 'left':
+                    nextX -= 20;
+                    break;
+                case 'up':
+                    nextY += step;
+                    break;
+                case 'right':
+                    nextX += step;
+                    break;
+                case 'up':
+                    nextY -= step;
+                    break;
+                default:
+                    break;
+            }
+
+            // On cross section
+            var isNextPosible = posibleStep(nextX, nextY);
+            if (isNextPosible) {
+                obj.move();
+            } else {
+                obj.direction = getRandomOtherDirection();
+            }
+
+            console.log('ghostAIMovements');
+            setTimeout(ghostAIMovements, 1000);
+        }
+        ghostAIMovements();
 
         //engine.renderer.erasePacDot(new PacDot(new Position(120, 120)));
         //engine.renderer.erasePacDot(new PacDot(new Position(140, 140), true));
