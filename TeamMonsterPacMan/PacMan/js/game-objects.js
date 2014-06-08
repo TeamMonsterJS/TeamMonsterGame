@@ -119,9 +119,12 @@ Ghost.prototype.constructor = Ghost;
 
 // -------------- PacMan Object -------------------
 // Making the actual controled object by player
-function PacMan(position, name, direction) {
+function PacMan(position, name, direction, speed) {
     proto(PacMan.prototype).constructor.call(this, position, name, direction);
     this.score = 0;
+    this.position = position;
+    this.speed = speed;
+    this.direction = direction;
     this.eatenDots = 0;
     this.eat = function () {
         // TODO: Implement logic for eating
@@ -130,6 +133,23 @@ function PacMan(position, name, direction) {
 PacMan.prototype = Object.create(MovingObject.prototype);
 
 PacMan.prototype.constructor = PacMan;
+
+PacMan.prototype = {
+    move: function () {
+        if (this.direction === 'right') {
+            this.position.x += this.speed;
+        }
+        else if (this.direction === 'left') {
+            this.position.x -= this.speed;
+        }
+        else if (this.direction === 'up') {
+            this.position.y -= this.speed;
+        }
+        else if (this.direction === 'down') {
+            this.position.y += this.speed;
+        }
+    },
+}
 
 // ---------------- Levels ------------------------
 // Making matrix for level

@@ -63,6 +63,7 @@
     <Content Include="JavaScript1.js" />
     <Content Include="js\engine.js" />
     <Content Include="js\game-objects.js" />
+    <Content Include="js\levels.js" />
     <Content Include="scripts\kinetic.min.js" />
     <Content Include="scripts\raphael-min.js" />
     <Content Include="scripts\raphael.js" />

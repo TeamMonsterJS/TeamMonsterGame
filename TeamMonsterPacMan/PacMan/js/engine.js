@@ -41,7 +41,7 @@
             var playerRadius = 8,
                 drawingShiftFromPositionTopLeft = 10;
 
-            paper.circle(pacMan.position.x + drawingShiftFromPositionTopLeft, pacMan.position.y + drawingShiftFromPositionTopLeft, playerRadius)
+            paperPacMan.circle(pacMan.position.x + drawingShiftFromPositionTopLeft, pacMan.position.y + drawingShiftFromPositionTopLeft, playerRadius)
                 .attr({
                     fill: 'yellow',
                     stroke: 'none'
