@@ -5,8 +5,11 @@
     var i,
         j;
 
-    function keyPressed(e) {
-        switch (e.keyCode) {
+    function keyPressed(ev) {
+        if (!ev) {
+            ev = window.event;
+        }
+        switch (ev.keyCode) {
             case 37:
                 console.log('left')
                 break;
