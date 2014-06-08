@@ -7,24 +7,24 @@
     <script src="scripts/raphael-min.js"></script>
     <script src="js/engine.js"></script>
     <script src="js/game-objects.js"></script>
+    <script src="js/levels.js"></script>
     <script>
         // Set paper for drawing with rendered
-        var paper = Raphael(0, 0, 600, 600);
+        var paper = Raphael(0, 0, 560, 600);
 
         // TESTS
-        var level1 = makeMatrix(28,28,20);
-        level1[0][0] = true;
-        level1[0][100] = true;
-        level1[20][20] = true;
-        level1[20][40] = true;
-        level1[20][60] = true;
-        level1[20][80] = true;
-        console.log(level1);
+        var dots = [];
+        var level = level1(makeMatrix(28, 28, 20));
+        console.log(dots);
 
         var obj = new Ghost(new Position(150, 150), 'ghost', 'up', 1);
         var engine = new Engine(paper);
-        engine.renderer.renderPacDots([new PacDot(new Position(110, 110)), new PacDot(new Position(120, 120)), new PacDot(new Position(140, 140),true)]);
-        engine.renderer.renderLevel(level1);
+        var player = new PacMan(new Position(0, 20), 'player', 'up');
+        //engine.renderer.renderPacDots([new PacDot(new Position(110, 110)), new PacDot(new Position(120, 120)), new PacDot(new Position(140, 140),true)]);
+        engine.renderer.renderLevel(level, dots);
+        engine.renderer.renderPacDots(dots);
+        engine.renderer.renderPacMan(player);
+
         //engine.renderer.erasePacDot(new PacDot(new Position(120, 120)));
         //engine.renderer.erasePacDot(new PacDot(new Position(140, 140), true));
     </script>
