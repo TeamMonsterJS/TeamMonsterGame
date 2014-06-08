@@ -106,5 +106,4 @@
     }
 
     this.renderer = new Renderer();
-
 }
