@@ -19,7 +19,7 @@
 
         var obj = new Ghost(new Position(140, 160), 'ghost', 'left', 1);
         var engine = new Engine(paper);
-        var player = new PacMan(new Position(0, 20), 'player', 'up');
+        var player = new PacMan(new Position(20, 20), 'player', 'right', 1);
         //engine.renderer.renderPacDots([new PacDot(new Position(110, 110)), new PacDot(new Position(120, 120)), new PacDot(new Position(140, 140),true)]);
         engine.renderer.renderLevel(level, dots);
         engine.renderer.renderGhost(obj);
@@ -32,6 +32,14 @@
         console.log('');
         engine.renderer.renderPacDots(dots);
         engine.renderer.renderPacMan(player);
+
+        function movingPacMan() {
+            paperPacMan.clear();
+            player.move();
+            engine.renderer.renderPacMan(player);            
+        }
+        setInterval(movingPacMan, 10);
+
 
         // while(true) for ghost AI tests after that will be made to function and added to engine
         function getRandomOtherDirection() {

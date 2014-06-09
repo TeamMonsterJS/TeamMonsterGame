@@ -12,16 +12,20 @@
         }
         switch (ev.keyCode) {
             case 37:
-                console.log('left')
+                player.direction = 'left';
+                console.log(player.direction);
                 break;
             case 38:
-                console.log('up')
+                player.direction = 'up';
+                console.log(player.direction);
                 break;
             case 39:
-                console.log('right')
+                player.direction = 'right';
+                console.log(player.direction);
                 break;
             case 40:
-                console.log('down')
+                player.direction = 'down';
+                console.log(player.direction);
                 break;
         }
     }
