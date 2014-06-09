@@ -64,6 +64,7 @@
     <Content Include="js\engine.js" />
     <Content Include="js\game-objects.js" />
     <Content Include="js\levels.js" />
+    <Content Include="js\main.js" />
     <Content Include="js\menu.js" />
     <Content Include="scripts\kinetic.min.js" />
     <Content Include="scripts\raphael-min.js" />
