@@ -96,23 +96,25 @@ function Ghost(position, name, direction, imgNumber) {
                 break;
         }
 
+        var newX = this.position.x + stepX;
+        var newY = this.position.y + stepY;
+
         if (this.svgForm) {
             this.svgForm.animate({
-                x: Math.round(this.svgForm.attr('x') + stepX),
-                y: Math.round(this.svgForm.attr('y') + stepY),
-            }, 500);
+                x: newX,
+                y: newY,
+            }, 500).onComplete
         }
 
-        this.position.x = Math.round(this.position.x + stepX);
-        this.position.y = Math.round(this.position.y + stepY);
+        // Reentering x and y for the svg form since it gives float coordinates if only doing it in
+        // .animate()
+        this.svgForm.attr({
+            x:newX,
+            y:newY,
+        });
 
-        console.log('step x -> ' + Math.round(this.svgForm.attr('x')));
-        console.log('step y -> ' + Math.round(this.svgForm.attr('y')));
-        console.log('position x -> ' + this.position.x);
-        console.log('position x -> ' + this.position.y);
-
-        //(Math.round(this.svgForm.attr('x')) % 10)
-        //(Math.round(this.svgForm.attr('y')) % 10)
+        this.position.x += stepX;
+        this.position.y += stepY;
     };
 }
 Ghost.prototype = Object.create(MovingObject.prototype);

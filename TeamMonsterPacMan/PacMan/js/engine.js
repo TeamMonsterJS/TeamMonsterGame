@@ -49,19 +49,14 @@
 
         // TODO: Needs to be made better is now just for rendering a sample player
         this.renderPacMan = function (pacMan, direction) {
-           
+
             var playerRadius = 8,
                 drawingShiftFromPositionTopLeft = 10;
-            paperPacMan.path('M' + pacMan.position.x + ',' + pacMan.position.y+ ' h-8 a8,8 0 1,0 8,-8 z')
+            paperPacMan.path('M' + pacMan.position.x + ',' + pacMan.position.y + ' h-8 a8,8 0 1,0 8,-8 z')
             .attr({
                 stroke: 'red',
-                fill:'yellow'
-            }).rotate(pacMan.angle, pacMan.position.x,pacMan.position.y);
-            //paperPacMan.circle(pacMan.position.x + drawingShiftFromPositionTopLeft, pacMan.position.y + drawingShiftFromPositionTopLeft, playerRadius)
-            //    .attr({
-            //        fill: 'yellow',
-            //        stroke: 'none'
-            //    })
+                fill: 'yellow'
+            }).rotate(pacMan.angle, pacMan.position.x, pacMan.position.y);
         }
 
         this.renderPacDots = function (dots) {
@@ -71,7 +66,7 @@
                     drawingShiftFromPositionTopLeft = 10;
 
                 if (dots[dot].isPowerDot) {
-                    dotRadius = 10;
+                    dotRadius = 5;
                     color = 'white';
                 }
                 paper.circle(dots[dot].position.x + drawingShiftFromPositionTopLeft, dots[dot].position.y + drawingShiftFromPositionTopLeft, dotRadius)
@@ -87,7 +82,7 @@
                 drawingShiftFromPositionTopLeft = 10;
 
             if (dot.isPowerDot) {
-                dotRadius = 10;
+                dotRadius = 5;
             }
 
             paper.circle(dot.position.x + drawingShiftFromPositionTopLeft, dot.position.y + drawingShiftFromPositionTopLeft, dotRadius)
@@ -110,11 +105,12 @@
                     if (level[i][j]) {
                         paper.rect(j, i, step, step)
                             .attr({
-                                fill: 'purple'
+                                fill: 'purple',
+                                stroke: 'none'
                             });
                     } else {
                         var rand = Math.random() * 100;
-                        if (rand <= 5) {
+                        if (rand <= 2) {
                             dots.push(new PacDot(new Position(j, i), true));
                         }
                         else {
@@ -128,6 +124,5 @@
     }
 
     this.renderer = new Renderer();
-
-
+    
 }
