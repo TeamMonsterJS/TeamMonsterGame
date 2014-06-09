@@ -14,8 +14,8 @@
     <script src="js/menu.js"></script>
     <script>
         // Set paper for drawing with rendered
-        var paper = Raphael(0, 0, 560, 600);
-        var paperPacMan = Raphael(0, 0, 560, 600);
+        var paper = Raphael(0, 0, 560, 560);
+        var paperPacMan = Raphael(0, 0, 560, 560);
 
         // TESTS
         var dots = [];
@@ -26,7 +26,7 @@
         var player = new PacMan(new Position(20, 20), 'player', 'right', 1);
         //engine.renderer.renderPacDots([new PacDot(new Position(110, 110)), new PacDot(new Position(120, 120)), new PacDot(new Position(140, 140),true)]);
         engine.renderer.renderLevel(level, dots);
-        
+
         console.log(obj.position);
         console.log('');
         console.log('');
@@ -41,28 +41,13 @@
             paperPacMan.clear();
             engine.renderer.renderPacMan(player);
             player.move();
-            
+
         }
         setInterval(movingPacMan, 10);
 
         // while(true) for ghost AI tests after that will be made to function and added to engine
-        function getRandomOtherDirection() {
-            var randomDirection = Math.floor(Math.random() * 4);
-
-            switch (randomDirection) {
-                case 0:
-                    randomDirection = 'left';
-                    break;
-                case 1:
-                    randomDirection = 'up';
-                    break;
-                case 2:
-                    randomDirection = 'right';
-                    break;
-                case 3:
-                    randomDirection = 'down';
-                    break;
-            }
+        function getRandomOtherDirection(posssibleDirs) {
+            var randomDirection = posssibleDirs[Math.floor(Math.random() * posssibleDirs.length)];
 
             return randomDirection;
         }
@@ -74,36 +59,80 @@
             return true;
         }
 
+        function checkLeftAndRight(obj, directions) {
+            var result = directions;
+            var step = 20;
+            var nextX = obj.position.x;
+            var nextY = obj.position.y;
+
+            if (!level[nextY][nextX - step]) {
+                result.push('left');
+            }
+            if (!level[nextY][nextX + step]) {
+                result.push('right');
+            }
+
+            return result;
+        }
+
+
+        function checkUpAndDown(obj, directions) {
+            var result = directions;
+            var step = 20;
+            var nextX = obj.position.x;
+            var nextY = obj.position.y;
+
+            if (!level[nextY - step][nextX]) {
+                result.push('up');
+            }
+            if (!level[nextY + step][nextX]) {
+                result.push('down');
+            }
+
+            return result;
+        }
+
         function ghostAIMovements() {
             var step = 20;
             var direction = obj.direction;
             var nextX = obj.position.x;
             var nextY = obj.position.y;
+            var possibleDirections = [];
+            possibleDirections.push(direction);
 
             switch (direction) {
                 case 'left':
                     nextX -= step;
+                    possibleDirections = checkUpAndDown(obj, possibleDirections);
                     break;
                 case 'up':
                     nextY -= step;
+                    possibleDirections = checkLeftAndRight(obj, possibleDirections);
                     break;
                 case 'right':
                     nextX += step;
+                    possibleDirections = checkUpAndDown(obj, possibleDirections);
                     break;
                 case 'down':
                     nextY += step;
+                    possibleDirections = checkLeftAndRight(obj, possibleDirections);
                     break;
                 default:
                     break;
             }
 
+            console.log(possibleDirections);
+
             // On cross section
             var isNextPosible = posibleStep(nextX, nextY);
-            if (isNextPosible) {
-                obj.move();
-            } else {
-                obj.direction = getRandomOtherDirection();
+            if (!isNextPosible) {
+                possibleDirections.shift();
             }
+
+            console.log(possibleDirections);
+            obj.direction = getRandomOtherDirection(possibleDirections);
+            console.log(obj.direction);
+            obj.move();
 
             console.log('ghostAIMovements');
             setTimeout(ghostAIMovements, 500);
