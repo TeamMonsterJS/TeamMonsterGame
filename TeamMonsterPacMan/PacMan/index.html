@@ -23,14 +23,13 @@
 
         var obj = new Ghost(new Position(140, 160), 'ghost', 'left', 1);
         var engine = new Engine(paper);
-        var player = new PacMan(new Position(20, 20), 'player', 'right', 1);
+        var player = new PacMan(new Position(20, 20), 'player', 'right', 20);
         //engine.renderer.renderPacDots([new PacDot(new Position(110, 110)), new PacDot(new Position(120, 120)), new PacDot(new Position(140, 140),true)]);
         engine.renderer.renderLevel(level, dots);
         engine.renderer.renderGhost(obj);
         console.log(obj.position);
         console.log('');
         console.log('');
-        obj.move();
         console.log(obj.position);
         console.log('');
         console.log('');
@@ -40,26 +39,25 @@
         function movingPacMan() {
             paperPacMan.clear();
             player.move();
-            engine.renderer.renderPacMan(player);            
+            engine.renderer.renderPacMan(player);
         }
-        setInterval(movingPacMan, 10);
-
+        setInterval(movingPacMan, 100);
 
         // while(true) for ghost AI tests after that will be made to function and added to engine
         function getRandomOtherDirection() {
             var randomDirection = Math.floor(Math.random() * 4);
 
             switch (randomDirection) {
-                case 1:
+                case 0:
                     randomDirection = 'left';
                     break;
-                case 2:
+                case 1:
                     randomDirection = 'up';
                     break;
-                case 3:
+                case 2:
                     randomDirection = 'right';
                     break;
-                case 4:
+                case 3:
                     randomDirection = 'down';
                     break;
             }
@@ -75,7 +73,7 @@
         }
 
         function posibleStep(nextX, nextY) {
-            if (level[nextX][nextY] && level[nextX][nextY] !== 'empty') {
+            if (level[nextX][nextY]) {
                 return false;
             }
             return true;
@@ -89,16 +87,16 @@
 
             switch (direction) {
                 case 'left':
-                    nextX -= 20;
+                    nextX -= step;
                     break;
                 case 'up':
-                    nextY += step;
+                    nextY -= step;
                     break;
                 case 'right':
                     nextX += step;
                     break;
-                case 'up':
-                    nextY -= step;
+                case 'down':
+                    nextY += step;
                     break;
                 default:
                     break;
@@ -113,7 +111,7 @@
             }
 
             console.log('ghostAIMovements');
-            setTimeout(ghostAIMovements, 1000);
+            setTimeout(ghostAIMovements, 500);
         }
         ghostAIMovements();
 
