@@ -113,7 +113,13 @@
                                 fill: 'purple'
                             });
                     } else {
-                        dots.push(new PacDot(new Position(j, i)));
+                        var rand = Math.random() * 100;
+                        if (rand <= 5) {
+                            dots.push(new PacDot(new Position(j, i), true));
+                        }
+                        else {
+                            dots.push(new PacDot(new Position(j, i)));
+                        }
                     }
 
                 }
