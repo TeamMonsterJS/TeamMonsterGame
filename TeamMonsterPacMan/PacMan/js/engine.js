@@ -13,18 +13,25 @@
         switch (ev.keyCode) {
             case 37:
                 player.direction = 'left';
+                player.angle = 315;
+                //225
                 console.log(player.direction);
                 break;
             case 38:
+                //45
                 player.direction = 'up';
+                player.angle = 45;
                 console.log(player.direction);
                 break;
             case 39:
                 player.direction = 'right';
+                player.angle = 130;
                 console.log(player.direction);
                 break;
             case 40:
+                //315
                 player.direction = 'down';
+                player.angle = 225;
                 console.log(player.direction);
                 break;
         }
@@ -42,14 +49,19 @@
 
         // TODO: Needs to be made better is now just for rendering a sample player
         this.renderPacMan = function (pacMan, direction) {
+           
             var playerRadius = 8,
                 drawingShiftFromPositionTopLeft = 10;
-
-            paperPacMan.circle(pacMan.position.x + drawingShiftFromPositionTopLeft, pacMan.position.y + drawingShiftFromPositionTopLeft, playerRadius)
-                .attr({
-                    fill: 'yellow',
-                    stroke: 'none'
-                })
+            paperPacMan.path('M' + pacMan.position.x + ',' + pacMan.position.y+ ' h-8 a8,8 0 1,0 8,-8 z')
+            .attr({
+                stroke: 'red',
+                fill:'yellow'
+            }).rotate(pacMan.angle, pacMan.position.x,pacMan.position.y);
+            //paperPacMan.circle(pacMan.position.x + drawingShiftFromPositionTopLeft, pacMan.position.y + drawingShiftFromPositionTopLeft, playerRadius)
+            //    .attr({
+            //        fill: 'yellow',
+            //        stroke: 'none'
+            //    })
         }
 
         this.renderPacDots = function (dots) {

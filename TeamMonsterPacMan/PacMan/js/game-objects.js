@@ -114,12 +114,18 @@
     // -------------- PacMan Object -------------------
     // Making the actual controled object by player
     function PacMan(position, name, direction, speed) {
+        this.angle = 120;
         proto(PacMan.prototype).constructor.call(this, position, name, direction);
         this.score = 0;
         this.position = position;
         this.speed = speed;
         this.direction = direction;
         this.eatenDots = 0;
+        //this.body = paperPacMan.path('M20,20 h-8 a8,8 0 1,0 8,-8 z')
+        //    .attr({
+        //        stroke: 'red',
+        //        fill: 'yellow'
+        //    }).rotate(angle, 20, 20);
         this.eat = function () {
             // TODO: Implement logic for eating
         }
