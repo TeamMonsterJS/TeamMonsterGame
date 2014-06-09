@@ -98,13 +98,17 @@
 
             if (this.svgForm) {
                 this.svgForm.animate({
-                    x: this.svgForm.attr('x') + stepX,
-                    y: this.svgForm.attr('y') + stepY,
+                    x: Math.round(this.svgForm.attr('x') + stepX),
+                    y: Math.round(this.svgForm.attr('y') + stepY),
                 }, 500);
             }
 
-            this.position.x = this.position.x + stepX;
-            this.position.y = this.position.y + stepY;
+            this.position.x = Math.round(this.position.x + stepX);
+            this.position.y = Math.round(this.position.y + stepY);
+            console.log(stepX);
+            console.log(stepY);
+            console.log(this.position.x);
+            console.log(this.position.y);
         };
     }
     Ghost.prototype = Object.create(MovingObject.prototype);
