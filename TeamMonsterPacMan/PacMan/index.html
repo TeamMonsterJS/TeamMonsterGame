@@ -62,18 +62,11 @@
                     break;
             }
 
-            //for (var i = 0; i < arguments.length; i++) {
-            //    if (randomDirection === arguments[i]) {
-            //        getRandomOtherDirection(arguments);
-            //        return randomDirection;
-            //    }
-            //}
-
             return randomDirection;
         }
 
         function posibleStep(nextX, nextY) {
-            if (level[nextX][nextY]) {
+            if (level[nextY][nextX]) {
                 return false;
             }
             return true;
