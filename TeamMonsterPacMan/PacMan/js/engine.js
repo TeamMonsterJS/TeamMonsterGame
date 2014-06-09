@@ -1,50 +1,21 @@
-﻿function Engine(paper) {
+﻿function Engine() {
     // here we will have the pressed direction eventListener
     // Sets event listener for the pressed keyes
-    window.addEventListener("keydown", keyPressed, true);
     var dots = [],
         i,
         j;
 
-    function keyPressed(ev) {
-        if (!ev) {
-            ev = window.event;
-        }
-        switch (ev.keyCode) {
-            case 37:
-                player.direction = 'left';
-                player.angle = 315;
-                //225
-                console.log(player.direction);
-                break;
-            case 38:
-                //45
-                player.direction = 'up';
-                player.angle = 45;
-                console.log(player.direction);
-                break;
-            case 39:
-                player.direction = 'right';
-                player.angle = 130;
-                console.log(player.direction);
-                break;
-            case 40:
-                //315
-                player.direction = 'down';
-                player.angle = 225;
-                console.log(player.direction);
-                break;
-        }
-    }
 
-    function Renderer() {
+    function Renderer(paper, paperPacMan) {
         paper.rect(0, 0, paper.width, paper.height)
             .attr({
                 fill: 'black'
             });
 
-        this.renderGhost = function (ghost) {
-            ghost.svgForm = paper.image(ghost.appearance, ghost.position.x, ghost.position.y, 20, 20);
+        this.renderGhost = function (ghosts) {
+            for (var ghost in ghosts) {
+                ghosts[ghost].svgForm = paper.image(ghosts[ghost].appearance, ghosts[ghost].position.x, ghosts[ghost].position.y, 20, 20);
+            }
         }
 
         // TODO: Needs to be made better is now just for rendering a sample player
@@ -123,6 +94,169 @@
         }
     }
 
-    this.renderer = new Renderer();
-    
+    this.startGame = new StartGame();
+    function StartGame() {
+        // adding the event listener when starting the game
+        window.addEventListener("keydown", keyPressed, true);
+
+        // Set paper for drawing with rendered
+        var paper = Raphael(0, 0, 560, 560);
+        var paperPacMan = Raphael(0, 0, 560, 560);
+
+        // Seting main game objects
+        var player = new PacMan(new Position(20, 20), 'player', 'right', 1);
+        var dots = [];
+        var level = level1(makeMatrix(28, 28, 20));
+
+        var randomGhost = function () {
+            var result = Math.floor(Math.random() * 12);
+
+            return result;
+        }
+
+        var ghosts = [
+            new Ghost(new Position(220, 220), 'ghost', 'left', randomGhost()),
+            new Ghost(new Position(240, 220), 'ghost', 'left', randomGhost()),
+            new Ghost(new Position(260, 220), 'ghost', 'up', randomGhost()),
+            new Ghost(new Position(280, 220), 'ghost', 'right', randomGhost()),
+            new Ghost(new Position(300, 220), 'ghost', 'right', randomGhost())
+        ];
+
+        var renderer = new Renderer(paper, paperPacMan);
+        renderer.renderLevel(level, dots);
+        renderer.renderPacDots(dots);
+        renderer.renderPacMan(player);
+        renderer.renderGhost(ghosts);
+
+        function movingPacMan() {
+            paperPacMan.clear();
+            renderer.renderPacMan(player);
+            player.move();
+        }
+        setInterval(movingPacMan, 10);
+
+        function ghostAIMovements() {
+            var step = 20;
+
+            for (var ghost in ghosts) {
+
+
+                var direction = ghosts[ghost].direction;
+                var nextX = ghosts[ghost].position.x;
+                var nextY = ghosts[ghost].position.y;
+                var possibleDirections = [];
+                possibleDirections.push(direction);
+
+                switch (direction) {
+                    case 'left':
+                        nextX -= step;
+                        possibleDirections = checkUpAndDown(ghosts[ghost], possibleDirections, level);
+                        break;
+                    case 'up':
+                        nextY -= step;
+                        possibleDirections = checkLeftAndRight(ghosts[ghost], possibleDirections, level);
+                        break;
+                    case 'right':
+                        nextX += step;
+                        possibleDirections = checkUpAndDown(ghosts[ghost], possibleDirections, level);
+                        break;
+                    case 'down':
+                        nextY += step;
+                        possibleDirections = checkLeftAndRight(ghosts[ghost], possibleDirections, level);
+                        break;
+                    default:
+                        break;
+                }
+
+                // On cross section
+                var isNextPosible = posibleStep(nextX, nextY, level);
+                if (!isNextPosible) {
+                    possibleDirections.shift();
+                }
+
+                ghosts[ghost].direction = getRandomOtherDirection(possibleDirections);
+                ghosts[ghost].move();
+            }
+
+            setTimeout(ghostAIMovements, 500);
+        }
+        ghostAIMovements();
+
+        function keyPressed(ev) {
+            if (!ev) {
+                ev = window.event;
+            }
+            switch (ev.keyCode) {
+                case 37:
+                    player.direction = 'left';
+                    player.angle = 315;
+                    //225
+                    console.log(player.direction);
+                    break;
+                case 38:
+                    //45
+                    player.direction = 'up';
+                    player.angle = 45;
+                    console.log(player.direction);
+                    break;
+                case 39:
+                    player.direction = 'right';
+                    player.angle = 130;
+                    console.log(player.direction);
+                    break;
+                case 40:
+                    //315
+                    player.direction = 'down';
+                    player.angle = 225;
+                    console.log(player.direction);
+                    break;
+            }
+        }
+    }
+
+    function checkLeftAndRight(ghost, directions, level) {
+        var result = directions;
+        var step = 20;
+        var nextX = ghost.position.x;
+        var nextY = ghost.position.y;
+
+        if (!level[nextY][nextX - step]) {
+            result.push('left');
+        }
+        if (!level[nextY][nextX + step]) {
+            result.push('right');
+        }
+
+        return result;
+    }
+
+    function checkUpAndDown(ghost, directions, level) {
+        var result = directions;
+        var step = 20;
+        var nextX = ghost.position.x;
+        var nextY = ghost.position.y;
+
+        if (!level[nextY - step][nextX]) {
+            result.push('up');
+        }
+        if (!level[nextY + step][nextX]) {
+            result.push('down');
+        }
+
+        return result;
+    }
+
+    // while(true) for ghost AI tests after that will be made to function and added to engine
+    function getRandomOtherDirection(posssibleDirs) {
+        var randomDirection = posssibleDirs[Math.floor(Math.random() * posssibleDirs.length)];
+
+        return randomDirection;
+    }
+
+    function posibleStep(nextX, nextY, level) {
+        if (level[nextY][nextX]) {
+            return false;
+        }
+        return true;
+    }
 }
