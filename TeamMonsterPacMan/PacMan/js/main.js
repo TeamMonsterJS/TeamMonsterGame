@@ -18,8 +18,8 @@
         paperPacMan.clear();
         engine.renderer.renderPacMan(player);
         player.move();
-
     }
+
     setInterval(movingPacMan, 10);
 
     // while(true) for ghost AI tests after that will be made to function and added to engine

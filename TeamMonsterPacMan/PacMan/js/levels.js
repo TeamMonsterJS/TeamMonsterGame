@@ -1,18 +1,12 @@
-﻿// HARD CODING levels options
+﻿var levels = (function myfunction() {
 
-// Function will make the outer borders of the playfield
+}());
 function setLevelBorders(level, step) {
     var i,
         j;
-
-    // level borders
+  
     for (i = 0; i < level.length; i += step) {
-
-        for (j = 0; j < level.length; j += step) {
-            //if (i > 0 && matrix.length - step > i &&
-            //    j > 20 && j < matrix.length - step) {
-            //    continue;
-            //}
+        for (j = 0; j < level.length; j += step) {            
             if (i >= step && j >= step &&
                 i < level.length - step && j < level.length - step) {
                 continue;

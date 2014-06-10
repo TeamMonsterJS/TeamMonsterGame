@@ -44,6 +44,7 @@
 
     function Ghost(position, name, direction, imgNumber) {
         MovingObject.call(this, position, name, direction);
+        this.appearance = 'images/ghost-' + imgNumber + '.png';
     }
 
     Ghost.prototype = new MovingObject();

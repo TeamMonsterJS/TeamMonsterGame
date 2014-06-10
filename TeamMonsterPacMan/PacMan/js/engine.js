@@ -56,12 +56,7 @@
             .attr({
                 stroke: 'red',
                 fill:'yellow'
-            }).rotate(pacMan.angle, pacMan.position.x,pacMan.position.y);
-            //paperPacMan.circle(pacMan.position.x + drawingShiftFromPositionTopLeft, pacMan.position.y + drawingShiftFromPositionTopLeft, playerRadius)
-            //    .attr({
-            //        fill: 'yellow',
-            //        stroke: 'none'
-            //    })
+            }).rotate(pacMan.angle, pacMan.position.x,pacMan.position.y);           
         }
 
         this.renderPacDots = function (dots) {
@@ -96,9 +91,7 @@
                     stroke: 'black'
                 })
         }
-
-        // Needs to be reformed or totali changed depending on how we will input the level
-        // For now works with hardcoded levels, and maybe some drawing changes are much needed
+        
         this.renderLevel = function (level, dots) {
             var step = 20;
             for (i = 0; i < level.length; i += step) {
