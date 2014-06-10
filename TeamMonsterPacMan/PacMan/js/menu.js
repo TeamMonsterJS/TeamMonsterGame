@@ -105,5 +105,4 @@ group.add(heart);
 group.add(startButton);
 group.add(pauseButton);
 layer.add(group);
-
 menu.add(layer);
