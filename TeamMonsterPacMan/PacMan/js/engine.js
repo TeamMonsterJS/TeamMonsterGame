@@ -23,11 +23,11 @@
 
             var playerRadius = 8,
                 drawingShiftFromPositionTopLeft = 10;
-            paperPacMan.path('M' + pacMan.position.x + ',' + pacMan.position.y + ' h-8 a8,8 0 1,0 8,-8 z')
+            paperPacMan.path('M' + (pacMan.position.x + drawingShiftFromPositionTopLeft) + ',' + (pacMan.position.y + drawingShiftFromPositionTopLeft) + ' h-8 a8,8 0 1,0 8,-8 z')
             .attr({
                 stroke: 'red',
                 fill: 'yellow'
-            }).rotate(pacMan.angle, pacMan.position.x, pacMan.position.y);
+            }).rotate(pacMan.angle, (pacMan.position.x + drawingShiftFromPositionTopLeft), (pacMan.position.y + drawingShiftFromPositionTopLeft));
         }
 
         this.renderPacDots = function (dots) {
@@ -104,7 +104,7 @@
         var paperPacMan = Raphael(0, 0, 560, 560);
 
         // Seting main game objects
-        var player = new PacMan(new Position(20, 20), 'player', 'right', 1);
+        var player = new PacMan(new Position(20, 20), 'player', 'up', 20);
         var dots = [];
         var level = level1(makeMatrix(28, 28, 20));
 
@@ -131,9 +131,15 @@
         function movingPacMan() {
             paperPacMan.clear();
             renderer.renderPacMan(player);
-            player.move();
+            player.move(level);
+            player.score += 0.5;
+
+            var indexEaten = player.eat(dots);
+            if (indexEaten !== -1) {
+                renderer.erasePacDot(dots[indexEaten]);
+            }
         }
-        setInterval(movingPacMan, 10);
+        setInterval(movingPacMan, 100);
 
         function ghostAIMovements() {
             var step = 20;
@@ -169,7 +175,7 @@
                 }
 
                 // On cross section
-                var isNextPosible = posibleStep(nextX, nextY, level);
+                var isNextPosible = possibleStep(nextX, nextY, level);
                 if (!isNextPosible) {
                     possibleDirections.shift();
                 }
@@ -253,10 +259,14 @@
         return randomDirection;
     }
 
-    function posibleStep(nextX, nextY, level) {
-        if (level[nextY][nextX]) {
-            return false;
-        }
-        return true;
+}
+
+function possibleStep(nextX, nextY, level) {
+    console.log(level[0][0]);
+    console.log(nextX);
+    console.log(nextY);
+    if (level[nextY][nextX]) {
+        return false;
     }
+    return true;
 }

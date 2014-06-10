@@ -28,16 +28,56 @@ PacDot.prototype.constructor = PacDot;
 // Again using prototype inheritance will make objects that will be moveble
 // an abstraction that will be used for seting Ghosts and PacMan objects
 // after that
-function MovingObject(position, name, direction) {
+function MovingObject(position, name, direction,speed) {
     // properties
     proto(MovingObject.prototype).constructor.call(this, position);
     this.name = name;
     this.direction = direction;
-    this.speed = 10;
+    this.speed = speed;
+    this.svgForm = false;
 
     // actions will stand as 
     this.move = function () {
         // TODO: Must implement moving algorithm which will be called in the engine just like MovingObject.move()
+        var stepX = 20,
+            stepY = 20;
+
+        switch (this.direction) {
+            case 'left':
+                stepX *= -1;
+                stepY = 0;
+                break;
+            case 'up':
+                stepX = 0;
+                stepY *= -1;
+                break;
+            case 'right':
+                stepY = 0;
+                break;
+            case 'down':
+                stepX = 0;
+                break;
+        }
+
+        var newX = this.position.x + stepX;
+        var newY = this.position.y + stepY;
+
+        if (this.svgForm) {
+            this.svgForm.animate({
+                x: newX,
+                y: newY,
+            }, 500)
+        }
+
+        // Reentering x and y for the svg form since it gives float coordinates if only doing it in
+        // .animate()
+        this.svgForm.attr({
+            x: newX,
+            y: newY,
+        });
+
+        this.position.x += stepX;
+        this.position.y += stepY;
     }
     this.changeState = function () {
         // TODO: Must be implemented in diferent way for Ghost and PacMan
@@ -73,49 +113,48 @@ function Ghost(position, name, direction, imgNumber) {
     proto(Ghost.prototype).constructor.call(this, position, name, direction);
     this.appearance = 'images/ghost-' + imgNumber + '.png';
     this.state = 'enemy';
-    this.svgForm = false;
 
-    this.move = function () {
-        var stepX = 20,
-            stepY = 20;
+    //this.move = function () {
+    //    var stepX = 20,
+    //        stepY = 20;
 
-        switch (this.direction) {
-            case 'left':
-                stepX *= -1;
-                stepY = 0;
-                break;
-            case 'up':
-                stepX = 0;
-                stepY *= -1;
-                break;
-            case 'right':
-                stepY = 0;
-                break;
-            case 'down':
-                stepX = 0;
-                break;
-        }
+    //    switch (this.direction) {
+    //        case 'left':
+    //            stepX *= -1;
+    //            stepY = 0;
+    //            break;
+    //        case 'up':
+    //            stepX = 0;
+    //            stepY *= -1;
+    //            break;
+    //        case 'right':
+    //            stepY = 0;
+    //            break;
+    //        case 'down':
+    //            stepX = 0;
+    //            break;
+    //    }
 
-        var newX = this.position.x + stepX;
-        var newY = this.position.y + stepY;
+    //    var newX = this.position.x + stepX;
+    //    var newY = this.position.y + stepY;
 
-        if (this.svgForm) {
-            this.svgForm.animate({
-                x: newX,
-                y: newY,
-            }, 500).onComplete
-        }
+    //    if (this.svgForm) {
+    //        this.svgForm.animate({
+    //            x: newX,
+    //            y: newY,
+    //        }, 500)
+    //    }
 
-        // Reentering x and y for the svg form since it gives float coordinates if only doing it in
-        // .animate()
-        this.svgForm.attr({
-            x:newX,
-            y:newY,
-        });
+    //    // Reentering x and y for the svg form since it gives float coordinates if only doing it in
+    //    // .animate()
+    //    this.svgForm.attr({
+    //        x: newX,
+    //        y: newY,
+    //    });
 
-        this.position.x += stepX;
-        this.position.y += stepY;
-    };
+    //    this.position.x += stepX;
+    //    this.position.y += stepY;
+    //};
 }
 Ghost.prototype = Object.create(MovingObject.prototype);
 
@@ -136,8 +175,26 @@ function PacMan(position, name, direction, speed) {
     //        stroke: 'red',
     //        fill: 'yellow'
     //    }).rotate(angle, 20, 20);
-    this.eat = function () {
+    this.eat = function (dots) {
         // TODO: Implement logic for eating
+        var index = -1;
+        for (var i = 0; i < dots.length; i += 1) {
+            if (dots[i].position.x === this.position.x && dots[i].position.y === this.position.y) {
+                index = i;
+                dots.splice(index, 1);
+                return index;
+            }
+        }
+
+        this.eatenDots++;
+        this.score += 100;
+        //var index = dots.map(function (e) { return e.position.x }).indexOf(this.position);
+        //if (index !== -1) {
+        //    dots.splice(index, 1);
+        //    console.log(index);
+        //}
+
+        return index;
     }
 }
 PacMan.prototype = Object.create(MovingObject.prototype);
@@ -145,19 +202,33 @@ PacMan.prototype = Object.create(MovingObject.prototype);
 PacMan.prototype.constructor = PacMan;
 
 PacMan.prototype = {
-    move: function () {
-        if (this.direction === 'right') {
+    move: function (level) {
+        if (this.direction === 'right' && possibleStep(this.position.x + this.speed, this.position.y, level)) {
             this.position.x += this.speed;
         }
-        else if (this.direction === 'left') {
+        else if (this.direction === 'left' && possibleStep(this.position.x - this.speed, this.position.y, level)) {
             this.position.x -= this.speed;
         }
-        else if (this.direction === 'up') {
+        else if (this.direction === 'up' && possibleStep(this.position.x, this.position.y - this.speed, level)) {
             this.position.y -= this.speed;
         }
-        else if (this.direction === 'down') {
+        else if (this.direction === 'down' && possibleStep(this.position.x, this.position.y + this.speed, level)) {
             this.position.y += this.speed;
         }
+
+        //Old movement 
+        //if (this.direction === 'right') {
+        //    this.position.x += this.speed;
+        //}
+        //else if (this.direction === 'left') {
+        //    this.position.x -= this.speed;
+        //}
+        //else if (this.direction === 'up') {
+        //    this.position.y -= this.speed;
+        //}
+        //else if (this.direction === 'down') {
+        //    this.position.y += this.speed;
+        //}
     },
     animate: function () {
 
