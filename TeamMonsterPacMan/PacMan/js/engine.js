@@ -49,22 +49,9 @@
         };
 
         this.erasePacDot = function (dot) {
-            var dotRadius = 4,
-                drawingShiftFromPositionTopLeft = 10;
-
-            if (dot.isPowerDot) {
-                dotRadius = 5;
-            }
-
-            debugger;
             dot.svgForm.animate({
                 r: 0,
             }, 400);
-            //paper.circle(dot.position.x + drawingShiftFromPositionTopLeft, dot.position.y + drawingShiftFromPositionTopLeft, dotRadius)
-            //    .attr({
-            //        fill: 'black',
-            //        stroke: 'black'
-            //    });
         };
 
         // Needs to be reformed or totali changed depending on how we will input the level
