@@ -137,7 +137,7 @@ function level1(matrix) {
     for (i = 200, j = 160; i < level.length - j - 2 * step; i += step) {
         level[i][j] = true;
         level[i][level.length - j - step] = true;
-    }
+    }    
 
     return level;
 }

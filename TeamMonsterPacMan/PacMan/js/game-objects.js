@@ -156,7 +156,7 @@ function PacMan(position, name, direction, speed) {
     this.collide = function (ghosts) {
         for (var ghosty in ghosts) {
             if (ghosts[ghosty].position.x == this.position.x && ghosts[ghosty].position.y == this.position.y) {
-                new StartGame();
+                new StartGame();                
             }
         }
     }
@@ -178,18 +178,59 @@ PacMan.prototype.constructor = PacMan;
 
 PacMan.prototype = {
     move: function (level) {
-        if (this.direction === 'right' && possibleStep(this.position.x + this.speed, this.position.y, level)) {
+
+        if (this.direction === 'right') {
+            if (level[this.position.x + 20] && level[this.position.y] && level[this.position.x + 20][this.position.y] === true) {
+                return;
+            }
+            if (!level[this.position.y]) {
+                return;
+            }
             this.position.x += this.speed;
         }
-        else if (this.direction === 'left' && possibleStep(this.position.x - this.speed, this.position.y, level)) {
+        else if (this.direction === 'left') {
+            if (level[this.position.x - 20] && level[this.position.y] && level[this.position.x - 20][this.position.y] === true) {
+                return;
+            }
+            if (!level[this.position.y]) {
+                return;
+            }
             this.position.x -= this.speed;
         }
-        else if (this.direction === 'up' && possibleStep(this.position.x, this.position.y - this.speed, level)) {
+        else if (this.direction === 'up') {
+            if (level[this.position.x] && level[this.position.y - 20] && level[this.position.x][this.position.y - 20] === true) {
+                return;
+            }
+            if (!level[this.position.x]) {
+                return;
+            }
             this.position.y -= this.speed;
         }
-        else if (this.direction === 'down' && possibleStep(this.position.x, this.position.y + this.speed, level)) {
+        else if (this.direction === 'down') {
+            if (level[this.position.x] && level[this.position.y + 20] && level[this.position.x][this.position.y + 20] === true) {
+                return;
+            }
+            if (!level[this.position.x]) {
+                return;
+            }
             this.position.y += this.speed;
         }
+        
+
+        //old
+
+        //if (this.direction === 'right' && possibleStep(this.position.x + this.speed, this.position.y, level)) {
+        //    this.position.x += this.speed;
+        //}
+        //else if (this.direction === 'left' && possibleStep(this.position.x - this.speed, this.position.y, level)) {
+        //    this.position.x -= this.speed;
+        //}
+        //else if (this.direction === 'up' && possibleStep(this.position.x, this.position.y - this.speed, level)) {
+        //    this.position.y -= this.speed;
+        //}
+        //else if (this.direction === 'down' && possibleStep(this.position.x, this.position.y + this.speed, level)) {
+        //    this.position.y += this.speed;
+        //}
 
         //Old movement 
         //if (this.direction === 'right') {

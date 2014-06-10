@@ -96,7 +96,7 @@
             paperGhostsLayer = Raphael(0, 0, 560, 560);
 
         // Seting main game objects
-        var player = new PacMan(new Position(20, 20), 'player', 'up', 20),
+        var player = new PacMan(new Position(20, 20), 'player', 'up', 1),
             dots = [],
             level = level1(makeMatrix(28, 28, 20));
 
@@ -135,7 +135,7 @@
             //this implement the act of collision
             player.collide(ghosts);
         }
-        setInterval(movingPacMan, 100);
+        setInterval(movingPacMan, 10);
 
         function ghostAIMovements() {
             var step = 20;
@@ -174,7 +174,7 @@
 
             setTimeout(ghostAIMovements, 500);
         }
-        ghostAIMovements();
+       // ghostAIMovements();
 
         function keyPressed(ev) {
             if (!ev) {
