@@ -1,14 +1,29 @@
 ﻿var gameObjects = (function () {
-    function Position(x, y) {
-        this.x = x;
-        this.y = y;
-    }
+    var direction = {
+        up: {
+            dx: 0,
+            dy: -1
+        },
+        down: {
+            dx: 0,
+            dy: 1
+        },
+        left: {
+            dx: -1,
+            dy: 0
+        },
+        right: {
+            dx: 1,
+            dy: 0
+        }
+    };
 
     function GameObject(position) {
         this.position = position;
+        this.size = 20;
     }
 
-    function PacDot(position, isPower) {
+    function PacDot(position) {
         GameObject.call(this, position);
         this.radius = 3;
         this.color = 'yellow';
@@ -16,16 +31,6 @@
 
     PacDot.prototype = new GameObject();
     PacDot.prototype.constructor = PacDot;
-
-    PacDot.prototype.erasePacDot = function () {
-        var drawingShiftFromPositionTopLeft = 10;
-
-        paper.circle(this.position.x + drawingShiftFromPositionTopLeft, this.position.y + drawingShiftFromPositionTopLeft, dotRadius)
-            .attr({
-                fill: 'black',
-                stroke: 'black'
-            })
-    }
 
     function PowerDot(position) {
         GameObject.call(this, position);
@@ -36,36 +41,24 @@
     PowerDot.prototype = new GameObject();
     PowerDot.prototype.constructor = PowerDot;
 
-    function MovingObject(position, name, direction) {
+    function MovingObject(position, direction) {
         GameObject.call(this, position);
         this.name = name;
         this.direction = direction;
-        this.speed = 10;
+        this.speed = 2;
     }
 
-    MovingObject.prototype = new GameObject()
+    MovingObject.prototype = new GameObject();
     MovingObject.prototype.constructor = MovingObject;
 
     MovingObject.prototype.move = function () {
-        if (this.direction === 'right') {
-            this.position.x += this.speed;
-        }
-        else if (this.direction === 'left') {
-            this.position.x -= this.speed;
-        }
-        else if (this.direction === 'up') {
-            this.position.y -= this.speed;
-        }
-        else if (this.direction === 'down') {
-            this.position.y += this.speed;
-        }
-    }
+        this.position.x += this.speed * direction[this.direction].dx;
+        this.position.y += this.speed * direction[this.direction].dy;
+    };    
 
-    function Ghost(position, name, direction, imgNumber) {
-        MovingObject.call(this, position, name, direction);
-        this.appearance = 'images/ghost-' + imgNumber + '.png';
-        this.height = 20;
-        this.width = 20;
+    function Ghost(position, direction, imgNumber) {
+        MovingObject.call(this, position, direction);
+        this.appearance = 'images/ghost-' + imgNumber + '.png';        
     }
 
     Ghost.prototype = new MovingObject();
@@ -90,7 +83,7 @@
         }
     };
 
-    Ghost.prototype.getRandomOtherDirection() = function () {
+    Ghost.prototype.getRandomOtherDirection = function () {
         var randomDirection = Math.floor(Math.random() * 4);
 
         switch (randomDirection) {
@@ -111,43 +104,31 @@
         return randomDirection;
     };
 
-    Ghost.prototype.move = function () {                
-        var nextX = obj.position.x;
-        var nextY = obj.position.y;
-
-        switch (this.direction) {
-            case 'left':
-                nextX -= this.speed;
-                break;
-            case 'up':
-                nextY -= this.speed;
-                break;
-            case 'right':
-                nextX += this.speed;
-                break;
-            case 'down':
-                nextY += this.speed;
-                break;
-            default:
-                break;
-        }
-    };
-
-    function PacMan(position, name, direction, speed) {
-        MovingObject.call(this, position, name, direction);
+    function PacMan(position, name, direction) {
+        MovingObject.call(this, position, direction);
+        this.name = name;
         this.angle = 120;
-        this.radius = 8;
+        this.radius = 10;
     }
 
     PacMan.prototype = new MovingObject();
     PacMan.prototype.constructor = PacMan;
 
-    PacMan.prototype.eat = function () {
-        // TODO: Implement logic for eating
-    };   
+    //PacMan.prototype.eat = function (position, direction, imgNumber) {
+    //    // TODO: Implement logic for eating
+    //};
 
     return {
+        getPacMan: function (position, name, direction) {
+            return new PacMan(position, name, direction);
+        },
+        getGhost: function (position, direction, imgNumber) {
+            return new Ghost(position, direction, imgNumber);
+        },
         PacDotType: PacDot,
-        PowerDotType: PowerDot
-    }
+        PowerDotType: PowerDot,
+        getDirections: function () {
+            return direction;
+        }
+    };
 }());

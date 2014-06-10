@@ -1,4 +1,4 @@
-﻿var levels = (function myfunction() {
+﻿var levels = (function () {
     function setLevelBorders(level, step) {
         var i,
             j;
@@ -30,7 +30,7 @@
         }
     }
 
-    function level1(matrix) {
+    function createLevel(matrix) {
         var level = matrix,
             step = 20,
             i,
@@ -115,7 +115,6 @@
             level[level.length - i - step][j] = true;
         }
 
-
         for (i = 80, j = level.length / 2; j < level.length - i; j += step) {
             level[i][j] = true;
             level[460][j] = true;
@@ -135,15 +134,21 @@
     }
 
     function makeMatrix(rows, cols, step) {
+        var i;
         rows *= step;
         cols *= step;
 
         var matrix = new Array(rows);
-        for (var i = 0; i < rows; i += step) {
+        for (i = 0; i < rows; i += step) {
             matrix[i] = new Array(cols);
         }
 
         return matrix;
     }
-}());
 
+    return {
+        getLevelOne: function (rows, cols, step) {
+            return createLevel(makeMatrix(rows, cols, step));
+        }
+    };
+}());

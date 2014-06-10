@@ -1,64 +1,66 @@
 ﻿/// <reference path="_reference.js" />
 var renderers = (function () {
+    function SVGRenderer(x, y, width, height) {
+        this.fieldLayer = Raphael(x, y, width, height);
+        this.dotsLayer = Raphael(x, y, width, height);
+        this.movingObjectsLayer = Raphael(x, y, width, height);
 
-    function SVGRenderer(containerm, width, height) {
-        this.paper = Raphael(0, 0, width, height);
-        this.paperPacMan = Raphael(0, 0, width, height);
-        this.paperGhosts = Raphael(0, 0, width, height);
-
-        paper.rect(0, 0, width, height)
+        this.fieldLayer.rect(0, 0, width, height)
             .attr({
                 fill: 'black'
             });
     }
 
     SVGRenderer.prototype.renderGhost = function (ghost) {
-        ghost.svgForm = paper.image(
+        this.movingObjectsLayer.image(
             ghost.appearance,
             ghost.position.x,
             ghost.position.y,
-            ghost.width,
-            ghost.height);
+            ghost.size,
+            ghost.size);
     };
 
-    SVGRenderer.prototype.eraseDot = function (dot) {
-        var dotRadius = dot.radius,
-            drawingShiftFromPositionTopLeft = 10;
-
-        paper.circle(dot.position.x + drawingShiftFromPositionTopLeft, dot.position.y + drawingShiftFromPositionTopLeft, dotRadius)
-            .attr({
-                fill: 'black',
-                stroke: 'black'
-            })
+    SVGRenderer.prototype.eraseMovingObjects = function () {
+        this.movingObjectsLayer.clear();
+        //var objPosition = obj.position;
+        //this.movingObjectsLayer.rect(objPosition.x, objPosition.y, obj.size, obj.size)
+        //.attr({
+        //    fill: 'black',
+        //    stroke: 'black'
+        //});
     };
 
     SVGRenderer.prototype.renderPacDots = function (dots) {
-        var drawingShiftFromPositionTopLeft = 10;
+        var drawingShiftFromPositionTopLeft = 10,
+            dot;
 
-        for (var dot in dots) {
-            paper.circle(
+        for (dot in dots) {
+            this.dotsLayer.circle(
                 dots[dot].position.x + drawingShiftFromPositionTopLeft,
                 dots[dot].position.y + drawingShiftFromPositionTopLeft,
                 dot.radius)
                 .attr({
                     fill: dot.color,
                     stroke: 'orange'
-                })
+                });
         }
     };
 
     SVGRenderer.prototype.renderPacMan = function (pacMan) {
-        var drawingShiftFromPositionTopLeft = 10;
-
-        paperPacMan.path('M' + pacMan.position.x + ',' + pacMan.position.y + ' h-8 a8,8 0 1,0 8,-8 z')
+        this.movingObjectsLayer.circle(
+            pacMan.position.x + pacMan.radius,
+            pacMan.position.y + pacMan.radius,
+            pacMan.radius)
         .attr({
             stroke: 'red',
             fill: 'yellow'
-        }).rotate(pacMan.angle, pacMan.position.x, pacMan.position.y);
+        });
     };
 
-    SVGRenderer.prototype.renderLevel = function () {
-        var step = 20;
+    SVGRenderer.prototype.renderLevel = function (level) {
+        var step = 20,
+            i,
+            j;
 
         for (i = 0; i < level.length; i += step) {
             for (j = 0; j < level.length; j += step) {
@@ -66,22 +68,19 @@ var renderers = (function () {
                     continue;
                 }
 
-                if (level[i][j]) {
-                    paper.rect(j, i, step, step)
+                if (level[i][j] === true) {
+                    this.fieldLayer.rect(j, i, step, step)
                         .attr({
                             fill: 'purple'
                         });
-                } else {
-                    dots.push(new PacDot(new Position(j, i)));
                 }
-
             }
         }
     };
 
     return {
-        getSVGRenderer: function () {
-            return new SVGRenderer();
+        getSVGRenderer: function (x, y, width, height) {
+            return new SVGRenderer(x, y, width, height);
         },
         getCanvasRenderer: function () {
             return new CanvasRenderer();
