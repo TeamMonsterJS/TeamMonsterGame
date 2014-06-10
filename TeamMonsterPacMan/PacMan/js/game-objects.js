@@ -10,11 +10,31 @@
 
     function PacDot(position, isPower) {
         GameObject.call(this, position);
-        this.isPowerDot = isPower;
+        this.radius = 3;
+        this.color = 'yellow';
     }
 
     PacDot.prototype = new GameObject();
     PacDot.prototype.constructor = PacDot;
+
+    PacDot.prototype.erasePacDot = function () {
+        var drawingShiftFromPositionTopLeft = 10;
+
+        paper.circle(this.position.x + drawingShiftFromPositionTopLeft, this.position.y + drawingShiftFromPositionTopLeft, dotRadius)
+            .attr({
+                fill: 'black',
+                stroke: 'black'
+            })
+    }
+
+    function PowerDot(position) {
+        GameObject.call(this, position);
+        this.radius = 10;
+        this.color = 'white';
+    }
+
+    PowerDot.prototype = new GameObject();
+    PowerDot.prototype.constructor = PowerDot;
 
     function MovingObject(position, name, direction) {
         GameObject.call(this, position);
@@ -41,10 +61,11 @@
         }
     }
 
-
     function Ghost(position, name, direction, imgNumber) {
         MovingObject.call(this, position, name, direction);
         this.appearance = 'images/ghost-' + imgNumber + '.png';
+        this.height = 20;
+        this.width = 20;
     }
 
     Ghost.prototype = new MovingObject();
@@ -69,9 +90,53 @@
         }
     };
 
+    Ghost.prototype.getRandomOtherDirection() = function () {
+        var randomDirection = Math.floor(Math.random() * 4);
+
+        switch (randomDirection) {
+            case 0:
+                randomDirection = 'left';
+                break;
+            case 1:
+                randomDirection = 'up';
+                break;
+            case 2:
+                randomDirection = 'right';
+                break;
+            case 3:
+                randomDirection = 'down';
+                break;
+        }
+
+        return randomDirection;
+    };
+
+    Ghost.prototype.move = function () {                
+        var nextX = obj.position.x;
+        var nextY = obj.position.y;
+
+        switch (this.direction) {
+            case 'left':
+                nextX -= this.speed;
+                break;
+            case 'up':
+                nextY -= this.speed;
+                break;
+            case 'right':
+                nextX += this.speed;
+                break;
+            case 'down':
+                nextY += this.speed;
+                break;
+            default:
+                break;
+        }
+    };
+
     function PacMan(position, name, direction, speed) {
         MovingObject.call(this, position, name, direction);
-        this.angle = 120;        
+        this.angle = 120;
+        this.radius = 8;
     }
 
     PacMan.prototype = new MovingObject();
@@ -79,17 +144,10 @@
 
     PacMan.prototype.eat = function () {
         // TODO: Implement logic for eating
-    };
+    };   
 
-    function makeMatrix(rows, cols, step) {
-        rows *= step;
-        cols *= step;
-
-        var matrix = new Array(rows);
-        for (var i = 0; i < rows; i += step) {
-            matrix[i] = new Array(cols);
-        }
-
-        return matrix;
+    return {
+        PacDotType: PacDot,
+        PowerDotType: PowerDot
     }
 }());

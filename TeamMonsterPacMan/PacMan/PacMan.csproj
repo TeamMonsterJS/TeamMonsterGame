@@ -60,14 +60,13 @@
     <Content Include="images\ghost-1.png" />
     <Content Include="images\pac-man-enemies.jpg" />
     <Content Include="index.html" />
-    <Content Include="JavaScript1.js" />
-    <Content Include="js\engine.js" />
     <Content Include="js\game-objects.js" />
     <Content Include="js\game.js" />
     <Content Include="js\levels.js" />
     <Content Include="js\main.js" />
     <Content Include="js\menu.js" />
     <Content Include="js\renderer.js" />
+    <Content Include="js\_reference.js" />
     <Content Include="scripts\kinetic.min.js" />
     <Content Include="scripts\raphael-min.js" />
     <Content Include="scripts\raphael.js" />
