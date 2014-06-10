@@ -42,9 +42,9 @@
 
                 dots[dot].svgForm = paper.circle(dots[dot].position.x + drawingShiftFromPositionTopLeft, dots[dot].position.y + drawingShiftFromPositionTopLeft, dotRadius);
                 dots[dot].svgForm.attr({
-                        fill: color,
-                        stroke: 'orange'
-                    });
+                    fill: color,
+                    stroke: 'orange'
+                });
             }
         };
 
@@ -131,6 +131,9 @@
                 renderer.erasePacDot(dots[indexEaten]);
                 dots.splice(indexEaten, 1);
             }
+            //console.log('fff -> ' + player.position.x);
+            //this implement the act of collision
+            player.collide(ghosts);
         }
         setInterval(movingPacMan, 100);
 
@@ -196,9 +199,25 @@
                     //315
                     player.direction = 'down';
                     player.angle = 225;
+                    for (var ghosty in ghosts) {                        
+                        console.log(ghosts[ghosty].position.x);
+                        
+                    }
+                    console.log('---->' + player.position.x);
                     break;
             }
         }
+
+        //it must be not here
+        //checkForCollision();
+        /*
+        for (var ghosty in ghosts) {
+            if (ghosts[ghosty].position.x == player.position.x && ghosts[ghosty].position.y == player.position.y) {
+                StartGame();
+                console.log('aaaa');
+            }
+        }
+        */        
     }
 
     function checkLeftAndRight(ghost, directions, level) {

@@ -153,6 +153,24 @@ function PacMan(position, name, direction, speed) {
 
         return index;
     }
+    this.collide = function (ghosts) {
+        for (var ghosty in ghosts) {
+            if (ghosts[ghosty].position.x == this.position.x && ghosts[ghosty].position.y == this.position.y) {
+                new StartGame();
+            }
+        }
+    }
+    /*
+    this.collide = function (ghosts) {
+        console.log('bbb ->>>>>' + this.position.x + ' and y is: ' + this.position.y);
+        for (var ghosty in ghosts) {
+            if (ghosts[ghosty].position.x == this.position.x && ghosts[ghosty].position.y == this.position.y) {
+                startGame();
+                console.log('aaaa');
+            }
+        }
+    }
+    */
 }
 PacMan.prototype = Object.create(MovingObject.prototype);
 
