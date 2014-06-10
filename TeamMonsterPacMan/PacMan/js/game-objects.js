@@ -29,7 +29,7 @@ PacDot.prototype.constructor = PacDot;
 // Again using prototype inheritance will make objects that will be moveble
 // an abstraction that will be used for seting Ghosts and PacMan objects
 // after that
-function MovingObject(position, name, direction,speed) {
+function MovingObject(position, name, direction, speed) {
     // properties
     proto(MovingObject.prototype).constructor.call(this, position);
     this.name = name;
@@ -40,21 +40,16 @@ function MovingObject(position, name, direction,speed) {
         var stepX = 20,
             stepY = 20;
 
-        switch (this.direction) {
-            case 'left':
-                stepX *= -1;
-                stepY = 0;
-                break;
-            case 'up':
-                stepX = 0;
-                stepY *= -1;
-                break;
-            case 'right':
-                stepY = 0;
-                break;
-            case 'down':
-                stepX = 0;
-                break;
+        if (this.direction === 'left') {
+            stepX *= -1;
+            stepY = 0;
+        } else if (this.direction === 'up') {
+            stepX = 0;
+            stepY *= -1;
+        } else if (this.direction === 'right') {
+            stepY = 0;
+        } else if (this.direction === 'down') {
+            stepX = 0;
         }
 
         var newX = this.position.x + stepX;
