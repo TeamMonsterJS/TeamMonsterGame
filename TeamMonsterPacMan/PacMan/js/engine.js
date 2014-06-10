@@ -6,7 +6,7 @@
         j;
 
 
-    function Renderer(paper, paperPacMan) {
+    function Renderer(paper, paperPacMan, paperGhostsLayer) {
         paper.rect(0, 0, paper.width, paper.height)
             .attr({
                 fill: 'black'
@@ -14,7 +14,7 @@
 
         this.renderGhost = function (ghosts) {
             for (var ghost in ghosts) {
-                ghosts[ghost].svgForm = paper.image(ghosts[ghost].appearance, ghosts[ghost].position.x, ghosts[ghost].position.y, 20, 20);
+                ghosts[ghost].svgForm = paperGhostsLayer.image(ghosts[ghost].appearance, ghosts[ghost].position.x, ghosts[ghost].position.y, 20, 20);
             }
         }
 
@@ -49,7 +49,7 @@
         }
 
         this.erasePacDot = function (dot) {
-            var dotRadius = 3,
+            var dotRadius = 4,
                 drawingShiftFromPositionTopLeft = 10;
 
             if (dot.isPowerDot) {
@@ -102,6 +102,7 @@
         // Set paper for drawing with rendered
         var paper = Raphael(0, 0, 560, 560);
         var paperPacMan = Raphael(0, 0, 560, 560);
+        var paperGhostsLayer = Raphael(0, 0, 560, 560);
 
         // Seting main game objects
         var player = new PacMan(new Position(20, 20), 'player', 'up', 20);
@@ -122,7 +123,7 @@
             new Ghost(new Position(300, 220), 'ghost', 'right', randomGhost())
         ];
 
-        var renderer = new Renderer(paper, paperPacMan);
+        var renderer = new Renderer(paper, paperPacMan, paperGhostsLayer);
         renderer.renderLevel(level, dots);
         renderer.renderPacDots(dots);
         renderer.renderPacMan(player);
@@ -137,6 +138,7 @@
             var indexEaten = player.eat(dots);
             if (indexEaten !== -1) {
                 renderer.erasePacDot(dots[indexEaten]);
+                dots.splice(indexEaten, 1);
             }
         }
         setInterval(movingPacMan, 100);
@@ -197,24 +199,20 @@
                     player.direction = 'left';
                     player.angle = 315;
                     //225
-                    console.log(player.direction);
                     break;
                 case 38:
                     //45
                     player.direction = 'up';
                     player.angle = 45;
-                    console.log(player.direction);
                     break;
                 case 39:
                     player.direction = 'right';
                     player.angle = 130;
-                    console.log(player.direction);
                     break;
                 case 40:
                     //315
                     player.direction = 'down';
                     player.angle = 225;
-                    console.log(player.direction);
                     break;
             }
         }
@@ -262,9 +260,6 @@
 }
 
 function possibleStep(nextX, nextY, level) {
-    console.log(level[0][0]);
-    console.log(nextX);
-    console.log(nextY);
     if (level[nextY][nextX]) {
         return false;
     }

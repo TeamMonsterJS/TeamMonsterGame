@@ -36,9 +36,7 @@ function MovingObject(position, name, direction,speed) {
     this.speed = speed;
     this.svgForm = false;
 
-    // actions will stand as 
-    this.move = function () {
-        // TODO: Must implement moving algorithm which will be called in the engine just like MovingObject.move()
+    this.move = function (level) {
         var stepX = 20,
             stepY = 20;
 
@@ -79,9 +77,11 @@ function MovingObject(position, name, direction,speed) {
         this.position.x += stepX;
         this.position.y += stepY;
     }
+
     this.changeState = function () {
         // TODO: Must be implemented in diferent way for Ghost and PacMan
     }
+
     this.directionInvert = function () {
         switch (direction) {
             case 'left':
@@ -181,7 +181,6 @@ function PacMan(position, name, direction, speed) {
         for (var i = 0; i < dots.length; i += 1) {
             if (dots[i].position.x === this.position.x && dots[i].position.y === this.position.y) {
                 index = i;
-                dots.splice(index, 1);
                 return index;
             }
         }
