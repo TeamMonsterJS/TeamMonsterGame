@@ -9,6 +9,7 @@ function Position(x, y) {
 function GameObject(position) {
     this.state = 'eatable';
     this.position = position;
+    this.svgForm = false;
 }
 
 // will be used in purpose of inheritance
@@ -34,7 +35,6 @@ function MovingObject(position, name, direction,speed) {
     this.name = name;
     this.direction = direction;
     this.speed = speed;
-    this.svgForm = false;
 
     this.move = function (level) {
         var stepX = 20,
@@ -113,48 +113,6 @@ function Ghost(position, name, direction, imgNumber) {
     proto(Ghost.prototype).constructor.call(this, position, name, direction);
     this.appearance = 'images/ghost-' + imgNumber + '.png';
     this.state = 'enemy';
-
-    //this.move = function () {
-    //    var stepX = 20,
-    //        stepY = 20;
-
-    //    switch (this.direction) {
-    //        case 'left':
-    //            stepX *= -1;
-    //            stepY = 0;
-    //            break;
-    //        case 'up':
-    //            stepX = 0;
-    //            stepY *= -1;
-    //            break;
-    //        case 'right':
-    //            stepY = 0;
-    //            break;
-    //        case 'down':
-    //            stepX = 0;
-    //            break;
-    //    }
-
-    //    var newX = this.position.x + stepX;
-    //    var newY = this.position.y + stepY;
-
-    //    if (this.svgForm) {
-    //        this.svgForm.animate({
-    //            x: newX,
-    //            y: newY,
-    //        }, 500)
-    //    }
-
-    //    // Reentering x and y for the svg form since it gives float coordinates if only doing it in
-    //    // .animate()
-    //    this.svgForm.attr({
-    //        x: newX,
-    //        y: newY,
-    //    });
-
-    //    this.position.x += stepX;
-    //    this.position.y += stepY;
-    //};
 }
 Ghost.prototype = Object.create(MovingObject.prototype);
 
@@ -248,23 +206,5 @@ function makeMatrix(rows, cols, step) {
     return matrix;
 }
 
-
 // ------------- TESTS WHILE WRITING CODE ------------------
 // Testing stuff if it works and gets us the right info for objects
-//var obj = new PacDot(new Position(10, 10));
-//console.log(obj.position.x);
-
-//obj = new MovingObject(new Position(10, 10), 'ghost', 'up');
-//obj.directionInvert();
-//console.log(obj);
-
-var obj = new Ghost(new Position(150, 150), 'ghost', 'up', 1);
-//console.log(obj);
-//var paper = Raphael(50, 50, 500, 500);
-//var ghost1 = paper.image(obj.appearance, obj.position.x, obj.position.y, 100, 100);
-//obj.position.x = 200;
-//obj.position.y = 200;
-//paper.image(obj.appearance, obj.position.x, obj.position.y, 100, 100);
-
-//obj = new PacMan(new Position(10, 10), 'ghost', 'up');
-//console.log(obj);

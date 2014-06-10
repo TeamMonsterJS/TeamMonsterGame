@@ -39,8 +39,9 @@
                     dotRadius = 5;
                     color = 'white';
                 }
-                paper.circle(dots[dot].position.x + drawingShiftFromPositionTopLeft, dots[dot].position.y + drawingShiftFromPositionTopLeft, dotRadius)
-                    .attr({
+
+                dots[dot].svgForm = paper.circle(dots[dot].position.x + drawingShiftFromPositionTopLeft, dots[dot].position.y + drawingShiftFromPositionTopLeft, dotRadius);
+                dots[dot].svgForm.attr({
                         fill: color,
                         stroke: 'orange'
                     });
@@ -55,17 +56,22 @@
                 dotRadius = 5;
             }
 
-            paper.circle(dot.position.x + drawingShiftFromPositionTopLeft, dot.position.y + drawingShiftFromPositionTopLeft, dotRadius)
-                .attr({
-                    fill: 'black',
-                    stroke: 'black'
-                });
+            debugger;
+            dot.svgForm.animate({
+                r: 0,
+            }, 400);
+            //paper.circle(dot.position.x + drawingShiftFromPositionTopLeft, dot.position.y + drawingShiftFromPositionTopLeft, dotRadius)
+            //    .attr({
+            //        fill: 'black',
+            //        stroke: 'black'
+            //    });
         };
 
         // Needs to be reformed or totali changed depending on how we will input the level
         // For now works with hardcoded levels, and maybe some drawing changes are much needed
         this.renderLevel = function (level, dots) {
             var step = 20;
+
             for (i = 0; i < level.length; i += step) {
                 for (j = 0; j < level.length; j += step) {
                     if (level[i][j] === 'empty') {
@@ -98,14 +104,14 @@
         window.addEventListener("keydown", keyPressed, true);
 
         // Set paper for drawing with rendered
-        var paper = Raphael(0, 0, 560, 560);
-        var paperPacMan = Raphael(0, 0, 560, 560);
-        var paperGhostsLayer = Raphael(0, 0, 560, 560);
+        var paper = Raphael(0, 0, 560, 560),
+            paperPacMan = Raphael(0, 0, 560, 560),
+            paperGhostsLayer = Raphael(0, 0, 560, 560);
 
         // Seting main game objects
-        var player = new PacMan(new Position(20, 20), 'player', 'up', 20);
-        var dots = [];
-        var level = level1(makeMatrix(28, 28, 20));
+        var player = new PacMan(new Position(20, 20), 'player', 'up', 20),
+            dots = [],
+            level = level1(makeMatrix(28, 28, 20));
 
         var randomGhost = function () {
             var result = Math.floor(Math.random() * 12);
@@ -145,31 +151,25 @@
             var step = 20;
 
             for (var ghost in ghosts) {
-                var direction = ghosts[ghost].direction;
-                var nextX = ghosts[ghost].position.x;
-                var nextY = ghosts[ghost].position.y;
-                var possibleDirections = [];
+                var direction = ghosts[ghost].direction,
+                    nextX = ghosts[ghost].position.x,
+                    nextY = ghosts[ghost].position.y,
+                    possibleDirections = [];
                 possibleDirections.push(direction);
 
-                switch (direction) {
-                    case 'left':
-                        nextX -= step;
-                        possibleDirections = checkUpAndDown(ghosts[ghost], possibleDirections, level);
-                        break;
-                    case 'up':
-                        nextY -= step;
-                        possibleDirections = checkLeftAndRight(ghosts[ghost], possibleDirections, level);
-                        break;
-                    case 'right':
-                        nextX += step;
-                        possibleDirections = checkUpAndDown(ghosts[ghost], possibleDirections, level);
-                        break;
-                    case 'down':
-                        nextY += step;
-                        possibleDirections = checkLeftAndRight(ghosts[ghost], possibleDirections, level);
-                        break;
-                    default:
-                        break;
+                if (direction === 'left') {
+                    nextX -= step;
+                    possibleDirections = checkUpAndDown(ghosts[ghost], possibleDirections, level);
+
+                } else if (direction === 'up') {
+                    nextY -= step;
+                    possibleDirections = checkLeftAndRight(ghosts[ghost], possibleDirections, level);
+                } else if (direction === 'right') {
+                    nextX += step;
+                    possibleDirections = checkUpAndDown(ghosts[ghost], possibleDirections, level);
+                } else if (direction === 'down') {
+                    nextY += step;
+                    possibleDirections = checkLeftAndRight(ghosts[ghost], possibleDirections, level);
                 }
 
                 // On cross section
@@ -215,10 +215,10 @@
     }
 
     function checkLeftAndRight(ghost, directions, level) {
-        var result = directions;
-        var step = 20;
-        var nextX = ghost.position.x;
-        var nextY = ghost.position.y;
+        var result = directions,
+            step = 20,
+            nextX = ghost.position.x,
+            nextY = ghost.position.y;
 
         if (!level[nextY][nextX - step]) {
             result.push('left');
@@ -231,10 +231,10 @@
     }
 
     function checkUpAndDown(ghost, directions, level) {
-        var result = directions;
-        var step = 20;
-        var nextX = ghost.position.x;
-        var nextY = ghost.position.y;
+        var result = directions,
+            step = 20,
+            nextX = ghost.position.x,
+            nextY = ghost.position.y;
 
         if (!level[nextY - step][nextX]) {
             result.push('up');
