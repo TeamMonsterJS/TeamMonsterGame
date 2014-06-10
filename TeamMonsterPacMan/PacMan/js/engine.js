@@ -5,7 +5,6 @@
         i,
         j;
 
-
     function Renderer(paper, paperPacMan, paperGhostsLayer) {
         paper.rect(0, 0, paper.width, paper.height)
             .attr({
@@ -16,7 +15,7 @@
             for (var ghost in ghosts) {
                 ghosts[ghost].svgForm = paperGhostsLayer.image(ghosts[ghost].appearance, ghosts[ghost].position.x, ghosts[ghost].position.y, 20, 20);
             }
-        }
+        };
 
         // TODO: Needs to be made better is now just for rendering a sample player
         this.renderPacMan = function (pacMan, direction) {
@@ -28,7 +27,7 @@
                 stroke: 'red',
                 fill: 'yellow'
             }).rotate(pacMan.angle, (pacMan.position.x + drawingShiftFromPositionTopLeft), (pacMan.position.y + drawingShiftFromPositionTopLeft));
-        }
+        };
 
         this.renderPacDots = function (dots) {
             for (var dot in dots) {
@@ -44,9 +43,9 @@
                     .attr({
                         fill: color,
                         stroke: 'orange'
-                    })
+                    });
             }
-        }
+        };
 
         this.erasePacDot = function (dot) {
             var dotRadius = 4,
@@ -60,8 +59,8 @@
                 .attr({
                     fill: 'black',
                     stroke: 'black'
-                })
-        }
+                });
+        };
 
         // Needs to be reformed or totali changed depending on how we will input the level
         // For now works with hardcoded levels, and maybe some drawing changes are much needed
@@ -83,15 +82,14 @@
                         var rand = Math.random() * 100;
                         if (rand <= 2) {
                             dots.push(new PacDot(new Position(j, i), true));
-                        }
-                        else {
+                        } else {
                             dots.push(new PacDot(new Position(j, i)));
                         }
                     }
 
                 }
             }
-        }
+        };
     }
 
     this.startGame = new StartGame();
@@ -113,7 +111,7 @@
             var result = Math.floor(Math.random() * 12);
 
             return result;
-        }
+        };
 
         var ghosts = [
             new Ghost(new Position(220, 220), 'ghost', 'left', randomGhost()),
@@ -147,8 +145,6 @@
             var step = 20;
 
             for (var ghost in ghosts) {
-
-
                 var direction = ghosts[ghost].direction;
                 var nextX = ghosts[ghost].position.x;
                 var nextY = ghosts[ghost].position.y;
