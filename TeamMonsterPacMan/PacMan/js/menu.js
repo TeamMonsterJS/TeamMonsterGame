@@ -69,7 +69,7 @@ var startButton = new Kinetic.Text({
 });
 
 var pauseButton = new Kinetic.Text({
-    x: startButton.x() + 150,
+    x: startButton.x() + 170,
     y: livesText.y() + 80,
     text: 'PAUSE',
     fontSize: 30,
