@@ -64,7 +64,6 @@
                     if (level[i][j] === 'empty') {
                         continue;
                     }
-
                     if (level[i][j]) {
                         paper.rect(j, i, step, step)
                             .attr({
