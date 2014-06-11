@@ -79,7 +79,6 @@
                             dots.push(new PacDot(new Position(j, i)));
                         }
                     }
-
                 }
             }
         };
