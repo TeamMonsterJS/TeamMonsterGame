@@ -172,7 +172,7 @@
 
             setTimeout(ghostAIMovements, 500);
         }
-       // ghostAIMovements();
+        ghostAIMovements();
 
         function keyPressed(ev) {
             if (!ev) {
