@@ -36,7 +36,7 @@ function MovingObject(position, name, direction, speed) {
     this.direction = direction;
     this.speed = speed;
 
-    this.move = function (level) {
+    this.move = function(level) {
         var stepX = 20,
             stepY = 20;
 
@@ -59,7 +59,7 @@ function MovingObject(position, name, direction, speed) {
             this.svgForm.animate({
                 x: newX,
                 y: newY,
-            }, 500)
+            }, 500);
         }
 
         // Reentering x and y for the svg form since it gives float coordinates if only doing it in
@@ -71,11 +71,11 @@ function MovingObject(position, name, direction, speed) {
 
         this.position.x += stepX;
         this.position.y += stepY;
-    }
+    };
 
-    this.changeState = function () {
+    this.changeState = function() {
         // TODO: Must be implemented in diferent way for Ghost and PacMan
-    }
+    };
 
     this.directionInvert = function () {
         switch (direction) {
