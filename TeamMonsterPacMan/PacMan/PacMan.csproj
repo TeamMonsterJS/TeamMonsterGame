@@ -78,6 +78,15 @@
     <Content Include="scripts\kinetic.min.js" />
     <Content Include="scripts\raphael-min.js" />
     <Content Include="scripts\raphael.js" />
+    <Content Include="sounds\pacman_beginning.wav" />
+    <Content Include="sounds\pacman_chomp.wav" />
+    <Content Include="sounds\pacman_death.wav" />
+    <Content Include="sounds\pacman_eatfruit.wav" />
+    <Content Include="sounds\pacman_eatghost.wav" />
+    <Content Include="sounds\pacman_extrapac.wav" />
+    <Content Include="sounds\pacman_intermission.wav" />
+    <Content Include="sounds\pacman_ringtone.mp3" />
+    <Content Include="sounds\pacman_ringtone_interlude.mp3" />
     <Content Include="styles\styles.css" />
     <Content Include="Web.config" />
   </ItemGroup>
