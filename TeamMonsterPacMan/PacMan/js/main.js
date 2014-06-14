@@ -2,7 +2,7 @@
 (function () {
     var level = levels.getLevelOne(),
         renderer = renderers.getSVGRenderer(0, 0, 560, 560),
-        pacman = gameObjects.getPacMan({ x: 1, y: 1 }, 'pesho', 'right'),
+        pacman = gameObjects.getPacMan({ x: 14, y: 22 }, 'pesho', 'right'),
         ghosts = [],
         game;
 

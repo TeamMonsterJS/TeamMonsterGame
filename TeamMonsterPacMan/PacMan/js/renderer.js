@@ -30,19 +30,38 @@ var renderers = (function () {
             20 * position.y,
             20, 20
         ).attr({
-                fill: 'black',
+            fill: 'black',
         });
     };
 
+    function sector(paper, cx, cy, r, startAngle, endAngle) {
+        var rad = Math.PI / 180;
+        var x1 = cx + r * Math.cos(-startAngle * rad),
+            x2 = cx + r * Math.cos(-endAngle * rad),
+            y1 = cy + r * Math.sin(-startAngle * rad),
+            y2 = cy + r * Math.sin(-endAngle * rad);
+
+        return paper.path(["M", cx, cy, "L", x1, y1, "A", r, r, 0, +(endAngle - startAngle > 180), 0, x2, y2, "z"]);
+    }
+
     SVGRenderer.prototype.renderPacMan = function (pacMan) {
+
+        //return sector(this.movingObjectsLayer,
+        //     20 * (pacMan.position.x + pacMan.radius),
+        //     20 * (pacMan.position.y + pacMan.radius),
+        //     20 * pacMan.radius,
+        //     30, 330).attr({
+        //         stroke: 'red',
+        //         fill: 'yellow'
+        //     });             
+
         return this.movingObjectsLayer.circle(
             20 * (pacMan.position.x + pacMan.radius),
             20 * (pacMan.position.y + pacMan.radius),
-            20 * pacMan.radius)
-        .attr({
-            stroke: 'red',
-            fill: 'yellow'
-        });
+            20 * pacMan.radius).attr({
+                stroke: 'red',
+                fill: 'yellow'
+            });
     };
 
     SVGRenderer.prototype.renderLevel = function (level) {

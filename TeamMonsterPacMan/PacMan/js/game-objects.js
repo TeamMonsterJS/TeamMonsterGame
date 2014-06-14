@@ -167,8 +167,7 @@
 
     function PacMan(position, name, direction) {
         MovingObject.call(this, position, direction);
-        this.name = name;
-        this.angle = 120;
+        this.name = name;        
         this.radius = 0.5;
         this.lives = 3;
     }

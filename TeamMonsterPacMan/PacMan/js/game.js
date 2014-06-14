@@ -64,8 +64,7 @@ var games = (function () {
     function animationFrame() {
         var gameOver = false,
             currentGhost,
-            currentPacDot,
-            i;
+            i;      
 
         if (isPacManCaught(thePlayer, theGhosts)) {
             theGame.restart();
