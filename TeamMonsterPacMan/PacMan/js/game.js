@@ -2,9 +2,11 @@
 var games = (function () {
     var theGame,
         thePlayer,
+        theGhosts,
         theRenderer,
         theLevel,
-        intervalID;
+        intervalID,
+        directions = gameObjects.getDirections();
 
     function Game(renderer, level, player, ghosts) {
         this.renderer = renderer;
@@ -19,7 +21,6 @@ var games = (function () {
         var objXPosition = position.x,
             objYPosition = position.y;
 
-        var directions = gameObjects.getDirections();
         objXPosition += speed * directions[direction].dx;
         objYPosition += speed * directions[direction].dy;
 
@@ -32,12 +33,30 @@ var games = (function () {
 
     function animationFrame() {
         var gameOver = false,
-            pacmanPosition = thePlayer.position,
-            hasCrashedIntoWall = false,
-            hasCrashedIntoItself = false;
+            currentGhost,
+            i;
 
         if (canMove(thePlayer.position, thePlayer.speed, thePlayer.direction)) {
             thePlayer.move(thePlayer.speed);
+        }
+
+        for (i = 0; i < theGhosts.length; i += 1) {
+            currentGhost = theGhosts[i];
+            if (currentGhost.canSeePacMan(thePlayer, theLevel)) {
+                currentGhost.chasePacMan(thePlayer);
+            } else if (canMove(currentGhost.position, currentGhost.speed, currentGhost.direction)) {
+                currentGhost.checkPossibleTurns(theLevel);
+                currentGhost.getRandomOtherDirection();
+            } else {
+                currentGhost.checkPossibleDirections(theLevel);
+                currentGhost.getRandomOtherDirection();
+            }
+
+            currentGhost.move(currentGhost.speed);
+            currentGhost.svgForm.animate({
+                x: 20 * currentGhost.position.x,
+                y: 20 * currentGhost.position.y
+            }, 150);
         }
 
         thePlayer.svgForm.animate(
@@ -46,6 +65,8 @@ var games = (function () {
                 cy: 20 * (thePlayer.position.y + thePlayer.radius),
                 r: 20 * thePlayer.radius
             }, 150);
+
+
         window.setTimeout(animationFrame, 150);
     }
 
@@ -54,6 +75,7 @@ var games = (function () {
         thePlayer = this.player;
         theRenderer = this.renderer;
         theLevel = this.level;
+        theGhosts = this.ghosts;
         theRenderer.renderLevel(this.level);
         animationFrame();
     };

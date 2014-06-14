@@ -14,8 +14,8 @@ var renderers = (function () {
     SVGRenderer.prototype.renderGhost = function (ghost) {
         return this.movingObjectsLayer.image(
             ghost.appearance,
-            ghost.position.x,
-            ghost.position.y,
+            20 * ghost.position.x,
+            20 * ghost.position.y,
             ghost.size,
             ghost.size);
     };

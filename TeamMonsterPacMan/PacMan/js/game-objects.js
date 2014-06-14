@@ -55,11 +55,12 @@
     MovingObject.prototype.move = function (speed) {
         this.position.x += speed * direction[this.direction].dx;
         this.position.y += speed * direction[this.direction].dy;
-    };    
+    };
 
     function Ghost(position, direction, imgNumber) {
         MovingObject.call(this, position, direction);
-        this.appearance = 'images/ghost-' + imgNumber + '.png';        
+        this.appearance = 'images/ghost-' + imgNumber + '.png';
+        this.possibleDirections;        
     }
 
     Ghost.prototype = new MovingObject();
@@ -85,24 +86,121 @@
     };
 
     Ghost.prototype.getRandomOtherDirection = function () {
-        var randomDirection = Math.floor(Math.random() * 4);
+        this.direction = this.possibleDirections[
+            Math.floor(Math.random() * this.possibleDirections.length)
+        ];
+    };
 
-        switch (randomDirection) {
-            case 0:
-                randomDirection = 'left';
-                break;
-            case 1:
-                randomDirection = 'up';
-                break;
-            case 2:
-                randomDirection = 'right';
-                break;
-            case 3:
-                randomDirection = 'down';
-                break;
+    Ghost.prototype.canSeePacMan = function (pacman, level) {
+        var i, min, max;
+
+        if (this.position.x !== pacman.position.x && this.position.y !== pacman.position.y) {
+            return false;
         }
 
-        return randomDirection;
+        if (this.position.y === pacman.position.y) {
+            min = Math.min(this.position.x, pacman.position.x);
+            max = Math.max(this.position.x, pacman.position.x);
+            for (i = min + 1; i < max; i += 1) {
+                if (level[this.position.y][i] === 1) {
+                    return false;
+                }
+            }
+        }
+
+        if (this.position.x === pacman.position.x) {
+            min = Math.min(this.position.y, pacman.position.y);
+            max = Math.max(this.position.y, pacman.position.y);
+            for (i = min + 1; i < max; i += 1) {
+                if (level[i][this.position.x] === 1) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    };
+
+    Ghost.prototype.chasePacMan = function (pacman) {
+        if (this.position.x === pacman.position.x) {
+            if (this.position.y < pacman.position.y) {
+                this.direction = 'down';
+            } else {
+                this.direction = 'up';
+            }
+        } else if (this.position.y === pacman.position.y) {
+            if (this.position.x < pacman.position.x) {
+                this.direction = 'right';
+            } else {
+                this.direction = 'left';
+            }
+        }
+    };
+
+    Ghost.prototype.checkPossibleDirections = function (level) {
+        var reverseDirection;
+
+        this.possibleDirections = [];
+        if (this.direction === 'left') {
+            reverseDirection = 'right';
+        } else if (this.direction === 'right') {
+            reverseDirection = 'left';
+        } else if (this.direction === 'up') {
+            reverseDirection = 'down';
+        } else if (this.direction === 'down') {
+            reverseDirection = 'up';
+        }
+
+        if (level[this.position.y][this.position.x - this.speed] !== 1) {
+            this.possibleDirections.push('left');
+        }
+
+        if (level[this.position.y][this.position.x + this.speed] !== 1) {
+            this.possibleDirections.push('right');
+        }
+
+        if (level[this.position.y + this.speed][this.position.x] !== 1) {
+            this.possibleDirections.push('down');
+        }
+
+        if (level[this.position.y - this.speed][this.position.x] !== 1) {
+            this.possibleDirections.push('up');
+        }
+
+        if (this.possibleDirections.length > 1) {
+            if (this.possibleDirections.indexOf(reverseDirection) !== -1) {
+                this.possibleDirections.splice(this.possibleDirections.indexOf(reverseDirection), 1);
+            }
+        }
+    };
+
+    // TODO: causes problems
+    Ghost.prototype.checkPossibleTurns = function (level) {
+        this.possibleDirections = [this.direction];
+
+        if (level[this.position.y][this.position.x - this.speed] !== 1) {
+            if (this.direction !== 'right'); {
+                this.possibleDirections.push('left');
+            }
+        }
+
+        if (level[this.position.y][this.position.x + this.speed] !== 1) {
+            if (this.direction !== 'left') {
+                this.possibleDirections.push('right');
+            }
+        }
+
+        if (level[this.position.y + this.speed][this.position.x] !== 1) {
+            if (this.direction !== 'up') {
+                this.possibleDirections.push('down');
+            }
+        }
+
+        if (level[this.position.y - this.speed][this.position.x] !== 1) {
+            if (this.direction !== 'down') {
+                this.possibleDirections.push('up');
+            }
+        }
     };
 
     function PacMan(position, name, direction) {
