@@ -1,7 +1,7 @@
 ﻿/// <reference path="_reference.js" />
 var levels = (function () {
     function createLevel() {
-        //1 for wall; 2 for dot, 0 - empty
+        //1 for wall; 2 for dot, 0 - empty 3 - poweer dot 
         var matrix = [
              [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
              [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],

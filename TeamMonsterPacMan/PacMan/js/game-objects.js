@@ -23,24 +23,6 @@
         this.size = 20;
     }
 
-    function PacDot(position) {
-        GameObject.call(this, position);
-        this.radius = 3;
-        this.color = '#FF8991';
-    }
-
-    PacDot.prototype = new GameObject();
-    PacDot.prototype.constructor = PacDot;
-
-    function PowerDot(position) {
-        GameObject.call(this, position);
-        this.radius = 10;
-        this.color = 'white';
-    }
-
-    PowerDot.prototype = new GameObject();
-    PowerDot.prototype.constructor = PowerDot;
-
     function MovingObject(position, direction) {
         GameObject.call(this, position);
         this.name = name;
@@ -194,10 +176,6 @@
     PacMan.prototype = new MovingObject();
     PacMan.prototype.constructor = PacMan;
 
-    //PacMan.prototype.eat = function (position, direction, imgNumber) {
-    //    // TODO: Implement logic for eating
-    //};
-
     return {
         getPacMan: function (position, name, direction) {
             return new PacMan(position, name, direction);
@@ -205,11 +183,6 @@
         getGhost: function (position, direction, imgNumber) {
             return new Ghost(position, direction, imgNumber);
         },
-        getPacDot: function (position) {
-            return new PacDot(position);
-        },
-        PacDotType: PacDot,
-        PowerDotType: PowerDot,
         getDirections: function () {
             return direction;
         }
