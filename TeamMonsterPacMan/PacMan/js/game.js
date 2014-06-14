@@ -5,14 +5,16 @@ var games = (function () {
         theGhosts,
         theRenderer,
         theLevel,
+        thePacDots,
         intervalID,
         directions = gameObjects.getDirections();
 
-    function Game(renderer, level, player, ghosts) {
+    function Game(renderer, level, player, ghosts, pacDots) {
         this.renderer = renderer;
         this.level = level;
         this.player = player;
         this.ghosts = ghosts;
+        this.pacDots = pacDots;
         this.bindKeyEvents();
         this.score = 0;
     }
@@ -31,12 +33,12 @@ var games = (function () {
         return true;
     }
 
-    function isPacManCaught(pacman, ghosts) {
+    function isPacManCaught() {
         var i;
 
-        for (i = 0; i < ghosts.length; i += 1) {
-            if (ghosts[i].position.x === pacman.position.x &&
-                ghosts[i].position.y === pacman.position.y) {
+        for (i = 0; i < theGhosts.length; i += 1) {
+            if (theGhosts[i].position.x === thePlayer.position.x &&
+                theGhosts[i].position.y === thePlayer.position.y) {
                 return true;
             }
         }
@@ -44,13 +46,45 @@ var games = (function () {
         return false;
     }
 
+    function isPacManOnPacDot() {
+        if (theLevel[thePlayer.position.y][thePlayer.position.x] == 2) {
+            console.log(thePlayer.position.x + ' ' + thePlayer.position.y);
+            return true;
+        }
+
+        console.log(thePlayer.position.x + ' ' + thePlayer.position.y + "!");
+        return false;
+    }
+
+    function getPacDotIndex(pacman) {
+        var i;
+
+        for (i = 0; i < thePacDots.length; i += 1) {
+            if (thePacDots[i].position.x === pacman.position.x &&
+                thePacDots[i].position.y === pacman.position.y) {
+                return i;
+            }
+        }
+    }
+
     function animationFrame() {
         var gameOver = false,
             currentGhost,
+            currentPacDot,
             i;
 
         if (isPacManCaught(thePlayer, theGhosts)) {
             theGame.restart();
+        }
+
+        if (isPacManOnPacDot()) {
+            i = getPacDotIndex(thePlayer);
+            thePacDots[i].svgForm.animate({
+                r: 0
+            }, 20, function () {
+                theLevel[thePacDots[i].position.y][thePacDots[i].position.x] = 0;
+                thePacDots.splice(i, 1);
+            });
         }
 
         if (canMove(thePlayer.position, thePlayer.speed, thePlayer.direction)) {
@@ -94,7 +128,9 @@ var games = (function () {
         theRenderer = this.renderer;
         theLevel = this.level;
         theGhosts = this.ghosts;
+        thePacDots = this.pacDots;
         theRenderer.renderLevel(this.level);
+        theRenderer.renderPacDots(this.pacDots);
         intervalID = window.setInterval(animationFrame, 150);
     };
 
@@ -167,8 +203,8 @@ var games = (function () {
     };
 
     return {
-        get: function (renderer, level, player, ghosts) {
-            return new Game(renderer, level, player, ghosts);
+        get: function (renderer, level, player, ghosts, pacDots) {
+            return new Game(renderer, level, player, ghosts, pacDots);
         }
     };
 }());

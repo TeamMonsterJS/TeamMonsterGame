@@ -1,6 +1,6 @@
-﻿var levels = (function () {
+﻿/// <reference path="_reference.js" />
+var levels = (function () {
     function createLevel() {
-
         //1 for wall; 2 for dot, 0 - empty
         var matrix = [
              [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -36,9 +36,29 @@
         return matrix;
     }
 
+    function getPacDots(level) {
+        var i, j,
+            pacDots = [],
+            currentPacDot;
+
+        for (i = 1; i < level.length - 1; i += 1) {
+            for (j = 1; j < level.length - 1; j += 1) {
+                if (level[i][j] == 2) {
+                    currentPacDot = gameObjects.getPacDot({ x: j, y: i });
+                    pacDots.push(currentPacDot);
+                }
+            }
+        }
+
+        return pacDots;
+    }
+
     return {
         getLevelOne: function () {
             return createLevel();
+        },
+        getPacDots: function (level) {
+            return getPacDots(level);
         }
     };
 }());

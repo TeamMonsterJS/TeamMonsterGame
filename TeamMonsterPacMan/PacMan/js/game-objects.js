@@ -18,15 +18,16 @@
         }
     };
 
-    function GameObject(position) {       
+    function GameObject(position) {
         this.position = position;
-        this.size = 20;        
+        this.size = 20;
+        this.svgForm = null;
     }
 
     function PacDot(position) {
         GameObject.call(this, position);
         this.radius = 3;
-        this.color = 'yellow';
+        this.color = '#FF8991';
     }
 
     PacDot.prototype = new GameObject();
@@ -41,12 +42,11 @@
     PowerDot.prototype = new GameObject();
     PowerDot.prototype.constructor = PowerDot;
 
-    function MovingObject(position, direction) {        
+    function MovingObject(position, direction) {
         GameObject.call(this, position);
         this.name = name;
         this.direction = direction;
         this.speed = 1;
-        this.svgForm = null;       
     }
 
     MovingObject.prototype = new GameObject();
@@ -204,6 +204,9 @@
         },
         getGhost: function (position, direction, imgNumber) {
             return new Ghost(position, direction, imgNumber);
+        },
+        getPacDot: function (position) {
+            return new PacDot(position);
         },
         PacDotType: PacDot,
         PowerDotType: PowerDot,

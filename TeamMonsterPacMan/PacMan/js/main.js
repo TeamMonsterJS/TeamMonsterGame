@@ -1,8 +1,9 @@
 ﻿/// <reference path="_reference.js" />
 (function () {
-    var level = levels.getLevelOne(),        
+    var level = levels.getLevelOne(),
+        pacDots = levels.getPacDots(level),
         renderer = renderers.getSVGRenderer(0, 0, 560, 560),
-        pacman = gameObjects.getPacMan({ x: 14, y: 22 }, 'pesho', 'right'),
+        pacman = gameObjects.getPacMan({ x: 1, y: 1 }, 'pesho', 'right'),
         ghosts = [],
         game;
 
@@ -19,8 +20,8 @@
     ghosts.push(gameObjects.getGhost({ x: 16, y: 13 }, 'up', 10));
     ghosts.push(gameObjects.getGhost({ x: 17, y: 13 }, 'left', 11));
 
-    game = games.get(renderer, level, pacman, ghosts);
-    pacman.svgForm = renderer.renderPacMan(pacman);    
+    game = games.get(renderer, level, pacman, ghosts, pacDots);
+    pacman.svgForm = renderer.renderPacMan(pacman);
 
     var i;
     for (i = 0; i < ghosts.length; i += 1) {

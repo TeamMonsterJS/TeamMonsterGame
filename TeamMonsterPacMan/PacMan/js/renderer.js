@@ -24,22 +24,6 @@ var renderers = (function () {
         this.movingObjectsLayer.clear();
     };
 
-    SVGRenderer.prototype.renderPacDots = function (dots) {
-        var drawingShiftFromPositionTopLeft = 10,
-            dot;
-
-        for (dot in dots) {
-            this.dotsLayer.circle(
-                dots[dot].position.x + drawingShiftFromPositionTopLeft,
-                dots[dot].position.y + drawingShiftFromPositionTopLeft,
-                dot.radius)
-                .attr({
-                    fill: dot.color,
-                    stroke: 'orange'
-                });
-        }
-    };
-
     SVGRenderer.prototype.renderPacMan = function (pacMan) {
         return this.movingObjectsLayer.circle(
             20 * (pacMan.position.x + pacMan.radius),
@@ -61,11 +45,25 @@ var renderers = (function () {
                 if (level[i][j] === 1) {
                     this.fieldLayer.rect(step * j, step * i, step, step)
                         .attr({
-                            //stroke: 'none',
                             fill: 'purple'
                         });
                 }
             }
+        }
+    };
+
+    SVGRenderer.prototype.renderPacDots = function (pacDots) {
+        var i,
+            currentPacDot;
+
+        for (i = 0; i < pacDots.length; i += 1) {
+            currentPacDot = pacDots[i];
+            currentPacDot.svgForm = this.dotsLayer.circle(
+            currentPacDot.size * currentPacDot.position.x + currentPacDot.size / 2,
+            currentPacDot.size * currentPacDot.position.y + currentPacDot.size / 2,
+            currentPacDot.radius).attr({
+                fill: currentPacDot.color,
+            });
         }
     };
 
