@@ -36,7 +36,7 @@ var games = (function () {
         return true;
     }
 
-    function isPacManCaught() {
+    function isPacManOnGhost() {
         var i;
 
         for (i = 0; i < theGhosts.length; i += 1) {
@@ -69,7 +69,7 @@ var games = (function () {
         theRenderer.eraseMovingObjects();
         thePlayer.svgForm = theRenderer.renderPacMan(thePlayer);
         var i;
-        for (i = 0; i < theGhosts.length; i += 1) {                      
+        for (i = 0; i < theGhosts.length; i += 1) {
             theGhosts[i].appearance = 'images/ghost-' + 5 + '.png';
             theGhosts[i].svgForm = theRenderer.renderGhost(theGhosts[i]);
         }
@@ -79,9 +79,20 @@ var games = (function () {
         theRenderer.eraseMovingObjects();
         thePlayer.svgForm = theRenderer.renderPacMan(thePlayer);
         var i;
-        for (i = 0; i < theGhosts.length; i += 1) {                      
+        for (i = 0; i < theGhosts.length; i += 1) {
             theGhosts[i].appearance = 'images/ghost-' + 1 + '.png';
             theGhosts[i].svgForm = theRenderer.renderGhost(theGhosts[i]);
+        }
+    }
+
+    function getCaughtGhost() {
+        var i;
+
+        for (i = 0; i < theGhosts.length; i += 1) {
+            if (theGhosts[i].position.x === thePlayer.position.x &&
+                theGhosts[i].position.y === thePlayer.position.y) {
+                return theGhosts[i];
+            }
         }
     }
 
@@ -97,8 +108,17 @@ var games = (function () {
             makeGhostOrange();
         }
 
-        if (isPacManCaught(thePlayer, theGhosts)) {
-            theGame.restart();
+        if (isPacManOnGhost(thePlayer, theGhosts)) {
+            if (theGhostRunnig) {
+                currentGhost = getCaughtGhost();
+                currentGhost.position = { x: 14, y: 14 };
+                currentGhost.svgForm.animate({
+                    x: 20 * 14,
+                    y: 20 * 14
+                }, 150);
+            } else {
+                theGame.restart();
+            }
         }
 
         if (isPacManOnPacDot()) {
@@ -143,7 +163,7 @@ var games = (function () {
                 currentGhost.getRandomOtherDirection();
             }
 
-            if (isPacManCaught(thePlayer, theGhosts) === false) {
+            if (isPacManOnGhost(thePlayer, theGhosts) === false) {
                 currentGhost.move(currentGhost.speed);
             }
         }
