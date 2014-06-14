@@ -21,7 +21,6 @@
     function GameObject(position) {
         this.position = position;
         this.size = 20;
-        this.svgForm = null;
     }
 
     function PacDot(position) {
@@ -47,6 +46,7 @@
         this.name = name;
         this.direction = direction;
         this.speed = 1;
+        this.svgForm = null;
     }
 
     MovingObject.prototype = new GameObject();
