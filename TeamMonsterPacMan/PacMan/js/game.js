@@ -5,6 +5,8 @@ var games = (function () {
         theGhosts,
         theRenderer,
         theLevel,
+        theGhostRunnig,
+        thePowerTicks,
         intervalID,
         directions = gameObjects.getDirections();
 
@@ -14,6 +16,8 @@ var games = (function () {
         this.player = player;
         this.ghosts = ghosts;
         this.pacDots = pacDots;
+        this.powerTicks = 0;
+        this.ghostRunnig = false;
         this.bindKeyEvents();
         this.score = 0;
     }
@@ -61,10 +65,37 @@ var games = (function () {
         return false;
     }
 
+    function makeGhostsBlue() {
+        theRenderer.eraseMovingObjects();
+        thePlayer.svgForm = theRenderer.renderPacMan(thePlayer);
+        var i;
+        for (i = 0; i < theGhosts.length; i += 1) {                      
+            theGhosts[i].appearance = 'images/ghost-' + 5 + '.png';
+            theGhosts[i].svgForm = theRenderer.renderGhost(theGhosts[i]);
+        }
+    }
+
+    function makeGhostOrange() {
+        theRenderer.eraseMovingObjects();
+        thePlayer.svgForm = theRenderer.renderPacMan(thePlayer);
+        var i;
+        for (i = 0; i < theGhosts.length; i += 1) {                      
+            theGhosts[i].appearance = 'images/ghost-' + 1 + '.png';
+            theGhosts[i].svgForm = theRenderer.renderGhost(theGhosts[i]);
+        }
+    }
+
     function animationFrame() {
         var gameOver = false,
             currentGhost,
-            i;      
+            i;
+
+        if (theGhostRunnig && thePowerTicks > 0) {
+            thePowerTicks--;
+        } else if (theGhostRunnig && thePowerTicks == 0) {
+            theGhostRunnig = false;
+            makeGhostOrange();
+        }
 
         if (isPacManCaught(thePlayer, theGhosts)) {
             theGame.restart();
@@ -78,6 +109,9 @@ var games = (function () {
         if (isPacManOnPowerDot()) {
             theLevel[thePlayer.position.y][thePlayer.position.x] = 0;
             theRenderer.erasePacDot(thePlayer.position);
+            theGhostRunnig = true;
+            thePowerTicks = 100;
+            makeGhostsBlue();
         }
 
         if (canMove(thePlayer.position, thePlayer.speed, thePlayer.direction)) {
@@ -87,7 +121,20 @@ var games = (function () {
         for (i = 0; i < theGhosts.length; i += 1) {
             currentGhost = theGhosts[i];
             if (currentGhost.canSeePacMan(thePlayer, theLevel)) {
-                currentGhost.chasePacMan(thePlayer);
+                if (!theGhostRunnig) {
+                    currentGhost.chasePacMan(thePlayer);
+                } else {
+                    if (currentGhost.isRunningAgainsPacman(thePlayer)) {
+                        currentGhost.checkPossibleDirections(theLevel);
+                        theGhosts[i].escapePacMan(thePlayer);
+                    } else if (canMove(currentGhost.position, currentGhost.speed, currentGhost.direction)) {
+                        currentGhost.checkPossibleTurns(theLevel);
+                        currentGhost.getRandomOtherDirection();
+                    } else {
+                        currentGhost.checkPossibleDirections(theLevel);
+                        currentGhost.getRandomOtherDirection();
+                    }
+                }
             } else if (canMove(currentGhost.position, currentGhost.speed, currentGhost.direction)) {
                 currentGhost.checkPossibleTurns(theLevel);
                 currentGhost.getRandomOtherDirection();
@@ -95,6 +142,7 @@ var games = (function () {
                 currentGhost.checkPossibleDirections(theLevel);
                 currentGhost.getRandomOtherDirection();
             }
+
             if (isPacManCaught(thePlayer, theGhosts) === false) {
                 currentGhost.move(currentGhost.speed);
             }
@@ -121,6 +169,8 @@ var games = (function () {
         theRenderer = this.renderer;
         theLevel = this.level;
         theGhosts = this.ghosts;
+        thePowerTicks = this.powerTicks;
+        theGhostRunnig = this.ghostRunnig;
         theRenderer.renderLevel(this.level);
         intervalID = window.setInterval(animationFrame, 150);
     };

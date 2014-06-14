@@ -100,6 +100,63 @@
         }
     };
 
+    Ghost.prototype.isRunningAgainsPacman = function (pacman) {
+        if (this.position.y == pacman.position.y &&
+            this.position.x < pacman.position.x &&
+            this.direction == 'right') {
+            return true;
+        } else if (this.position.y == pacman.position.y &&
+            this.position.x > pacman.position.x &&
+            this.direction == 'left') {
+            return true;
+        } else if (this.position.x == pacman.position.x &&
+            this.position.y < pacman.position.y &&
+            this.direction == 'down') {
+            return true;
+        } else if (this.position.x == pacman.position.x &&
+            this.position.y > pacman.position.y &&
+            this.direction == 'up') {
+            return true;
+        }
+
+        return false;
+    };
+
+    Ghost.prototype.escapePacMan = function (pacman) {
+        var escapeDirection,
+            getCaughtDirection;
+
+        if (this.position.x === pacman.position.x) {
+            if (this.position.y < pacman.position.y) {
+                escapeDirectiondirection = 'up';
+                getCaughtDirection = 'down';
+            } else {
+                escapeDirectiondirection = 'down';
+                getCaughtDirection = 'up';
+            }
+        } else if (this.position.y === pacman.position.y) {
+            if (this.position.x < pacman.position.x) {
+                escapeDirection = 'left';
+                getCaughtDirection = 'right';
+            } else {
+                escapeDirection = 'right';
+                getCaughtDirection = 'left';
+            }
+        }
+
+        if (this.possibleDirections.indexOf(escapeDirection) !== -1) {
+            this.direction = escapeDirection;
+        } else {
+            if (this.possibleDirections.length > 1) {
+                this.possibleDirections.splice(this.possibleDirections.indexOf(getCaughtDirection), 1);
+            }
+
+            this.direction = this.possibleDirections[
+                Math.floor(Math.random() * this.possibleDirections.length)
+            ];
+        }
+    }
+
     Ghost.prototype.checkPossibleDirections = function (level) {
         var reverseDirection;
 
@@ -167,7 +224,7 @@
 
     function PacMan(position, name, direction) {
         MovingObject.call(this, position, direction);
-        this.name = name;        
+        this.name = name;
         this.radius = 0.5;
         this.lives = 3;
     }

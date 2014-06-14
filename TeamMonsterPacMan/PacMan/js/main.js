@@ -6,18 +6,18 @@
         ghosts = [],
         game;
 
-    ghosts.push(gameObjects.getGhost({ x: 12, y: 14 }, 'left', 0));
+    ghosts.push(gameObjects.getGhost({ x: 12, y: 14 }, 'left', 1));
     ghosts.push(gameObjects.getGhost({ x: 13, y: 14 }, 'up', 1));
-    ghosts.push(gameObjects.getGhost({ x: 14, y: 14 }, 'right', 2));
-    ghosts.push(gameObjects.getGhost({ x: 15, y: 14 }, 'down', 3));
-    ghosts.push(gameObjects.getGhost({ x: 16, y: 14 }, 'right', 4));
-    ghosts.push(gameObjects.getGhost({ x: 17, y: 14 }, 'up', 5));
-    ghosts.push(gameObjects.getGhost({ x: 12, y: 13 }, 'down', 6));
-    ghosts.push(gameObjects.getGhost({ x: 13, y: 13 }, 'left', 7));
-    ghosts.push(gameObjects.getGhost({ x: 14, y: 13 }, 'right', 8));
-    ghosts.push(gameObjects.getGhost({ x: 15, y: 13 }, 'down', 9));
-    ghosts.push(gameObjects.getGhost({ x: 16, y: 13 }, 'up', 10));
-    ghosts.push(gameObjects.getGhost({ x: 17, y: 13 }, 'left', 11));
+    ghosts.push(gameObjects.getGhost({ x: 14, y: 14 }, 'right', 1));
+    ghosts.push(gameObjects.getGhost({ x: 15, y: 14 }, 'down', 1));
+    ghosts.push(gameObjects.getGhost({ x: 16, y: 14 }, 'right', 1));
+    ghosts.push(gameObjects.getGhost({ x: 17, y: 14 }, 'up', 1));
+    ghosts.push(gameObjects.getGhost({ x: 12, y: 13 }, 'down', 1));
+    ghosts.push(gameObjects.getGhost({ x: 13, y: 13 }, 'left', 1));
+    ghosts.push(gameObjects.getGhost({ x: 14, y: 13 }, 'right', 1));
+    ghosts.push(gameObjects.getGhost({ x: 15, y: 13 }, 'down', 1));
+    ghosts.push(gameObjects.getGhost({ x: 16, y: 13 }, 'up', 1));
+    ghosts.push(gameObjects.getGhost({ x: 17, y: 13 }, 'left', 1));
 
     game = games.get(renderer, level, pacman, ghosts);
     pacman.svgForm = renderer.renderPacMan(pacman);
