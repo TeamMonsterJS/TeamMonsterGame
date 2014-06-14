@@ -128,7 +128,7 @@ function PacMan(position, name, direction, speed) {
     //        stroke: 'red',
     //        fill: 'yellow'
     //    }).rotate(angle, 20, 20);
-    this.eat = function (dots) {
+    this.eat = function(dots) {
         // TODO: Implement logic for eating
         var index = -1;
         for (var i = 0; i < dots.length; i += 1) {
@@ -147,14 +147,15 @@ function PacMan(position, name, direction, speed) {
         //}
 
         return index;
-    }
-    this.collide = function (ghosts) {
+    };
+    this.collide = function(ghosts) {
         for (var ghosty in ghosts) {
             if (ghosts[ghosty].position.x == this.position.x && ghosts[ghosty].position.y == this.position.y) {
-                new StartGame();                
+                new StartGame();
             }
         }
-    }
+    };
+    //experiment for collision
     /*
     this.collide = function (ghosts) {
         console.log('bbb ->>>>>' + this.position.x + ' and y is: ' + this.position.y);
