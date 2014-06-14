@@ -18,9 +18,9 @@
         }
     };
 
-    function GameObject(position) {
+    function GameObject(position) {       
         this.position = position;
-        this.size = 20;
+        this.size = 20;        
     }
 
     function PacDot(position) {
@@ -41,12 +41,12 @@
     PowerDot.prototype = new GameObject();
     PowerDot.prototype.constructor = PowerDot;
 
-    function MovingObject(position, direction) {
+    function MovingObject(position, direction) {        
         GameObject.call(this, position);
         this.name = name;
         this.direction = direction;
         this.speed = 1;
-        this.svgForm = null;
+        this.svgForm = null;       
     }
 
     MovingObject.prototype = new GameObject();
@@ -60,30 +60,11 @@
     function Ghost(position, direction, imgNumber) {
         MovingObject.call(this, position, direction);
         this.appearance = 'images/ghost-' + imgNumber + '.png';
-        this.possibleDirections;        
+        this.possibleDirections = null;
     }
 
     Ghost.prototype = new MovingObject();
     Ghost.prototype.constructor = Ghost;
-
-    Ghost.prototype.directionInvert = function () {
-        switch (direction) {
-            case 'left':
-                this.direction = 'right';
-                break;
-            case 'right':
-                this.direction = 'left';
-                break;
-            case 'up':
-                this.direction = 'down';
-                break;
-            case 'down':
-                this.direction = 'up';
-                break;
-            default:
-                break;
-        }
-    };
 
     Ghost.prototype.getRandomOtherDirection = function () {
         this.direction = this.possibleDirections[
@@ -174,12 +155,11 @@
         }
     };
 
-    // TODO: causes problems
     Ghost.prototype.checkPossibleTurns = function (level) {
         this.possibleDirections = [this.direction];
 
         if (level[this.position.y][this.position.x - this.speed] !== 1) {
-            if (this.direction !== 'right'); {
+            if (this.direction !== 'right') {
                 this.possibleDirections.push('left');
             }
         }
@@ -208,6 +188,7 @@
         this.name = name;
         this.angle = 120;
         this.radius = 0.5;
+        this.lives = 3;
     }
 
     PacMan.prototype = new MovingObject();

@@ -69,6 +69,13 @@ var renderers = (function () {
         }
     };
 
+    SVGRenderer.prototype.writeGameOver = function () {
+        this.fieldLayer.text(270, 270, 'Game Over').attr({
+            'font-size': 60,
+            fill: 'red'
+        });
+    };
+
     return {
         getSVGRenderer: function (x, y, width, height) {
             return new SVGRenderer(x, y, width, height);
