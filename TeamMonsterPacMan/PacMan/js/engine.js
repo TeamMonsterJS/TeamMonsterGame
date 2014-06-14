@@ -199,12 +199,16 @@
                     //315
                     player.direction = 'down';
                     player.angle = 225;
-                    for (var ghosty in ghosts) {                        
+                    //experiment
+                    /*
+                    for (var ghosty in ghosts) {
                         console.log(ghosts[ghosty].position.x);
                         
                     }
                     //for testing how to obtain the coordinates of the pacman
                     //console.log('---->' + player.position.x);
+
+                    */
                     break;
             }
         }
