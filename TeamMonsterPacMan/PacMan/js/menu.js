@@ -1,7 +1,7 @@
 ﻿//test comment
 var menu = new Kinetic.Stage({
     container: 'canvas-container',
-    width: 350,
+    width: 300,
     height: 250
 });
 
@@ -69,7 +69,7 @@ var startButton = new Kinetic.Text({
 });
 
 var pauseButton = new Kinetic.Text({
-    x: startButton.x() + 200,
+    x: startButton.x() + 170,
     y: livesText.y() + 80,
     text: 'PAUSE',
     fontSize: 30,
