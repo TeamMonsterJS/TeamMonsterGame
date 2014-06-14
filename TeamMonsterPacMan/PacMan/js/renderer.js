@@ -12,7 +12,7 @@ var renderers = (function () {
     }
 
     SVGRenderer.prototype.renderGhost = function (ghost) {
-        this.movingObjectsLayer.image(
+        return this.movingObjectsLayer.image(
             ghost.appearance,
             ghost.position.x,
             ghost.position.y,
@@ -22,12 +22,6 @@ var renderers = (function () {
 
     SVGRenderer.prototype.eraseMovingObjects = function () {
         this.movingObjectsLayer.clear();
-        //var objPosition = obj.position;
-        //this.movingObjectsLayer.rect(objPosition.x, objPosition.y, obj.size, obj.size)
-        //.attr({
-        //    fill: 'black',
-        //    stroke: 'black'
-        //});
     };
 
     SVGRenderer.prototype.renderPacDots = function (dots) {
@@ -47,10 +41,10 @@ var renderers = (function () {
     };
 
     SVGRenderer.prototype.renderPacMan = function (pacMan) {
-        this.movingObjectsLayer.circle(
-            pacMan.position.x + pacMan.radius,
-            pacMan.position.y + pacMan.radius,
-            pacMan.radius)
+        return this.movingObjectsLayer.circle(
+            20 * (pacMan.position.x + pacMan.radius),
+            20 * (pacMan.position.y + pacMan.radius),
+            20 * pacMan.radius)
         .attr({
             stroke: 'red',
             fill: 'yellow'
@@ -62,15 +56,12 @@ var renderers = (function () {
             i,
             j;
 
-        for (i = 0; i < level.length; i += step) {
-            for (j = 0; j < level.length; j += step) {
-                if (level[i][j] === 'empty') {
-                    continue;
-                }
-
-                if (level[i][j] === true) {
-                    this.fieldLayer.rect(j, i, step, step)
+        for (i = 0; i < level.length; i += 1) {
+            for (j = 0; j < level[i].length; j += 1) {
+                if (level[i][j] === 1) {
+                    this.fieldLayer.rect(step * j, step * i, step, step)
                         .attr({
+                            //stroke: 'none',
                             fill: 'purple'
                         });
                 }

@@ -45,15 +45,16 @@
         GameObject.call(this, position);
         this.name = name;
         this.direction = direction;
-        this.speed = 2;
+        this.speed = 1;
+        this.svgForm = null;
     }
 
     MovingObject.prototype = new GameObject();
     MovingObject.prototype.constructor = MovingObject;
 
-    MovingObject.prototype.move = function () {
-        this.position.x += this.speed * direction[this.direction].dx;
-        this.position.y += this.speed * direction[this.direction].dy;
+    MovingObject.prototype.move = function (speed) {
+        this.position.x += speed * direction[this.direction].dx;
+        this.position.y += speed * direction[this.direction].dy;
     };    
 
     function Ghost(position, direction, imgNumber) {
@@ -108,7 +109,7 @@
         MovingObject.call(this, position, direction);
         this.name = name;
         this.angle = 120;
-        this.radius = 10;
+        this.radius = 0.5;
     }
 
     PacMan.prototype = new MovingObject();

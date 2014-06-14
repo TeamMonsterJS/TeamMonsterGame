@@ -15,19 +15,19 @@ var games = (function () {
         this.score = 0;
     }
 
-    // Not working
-    function canMove(obj) {
-        var objPosition = obj.position;
-        direction = gameObjects.getDirections();
-        objPosition.x += this.speed * direction[obj.direction].dx;
-        objPosition.y += this.speed * direction[obj.direction].dy;
+    function canMove(position, speed, direction) {
+        var objXPosition = position.x,
+            objYPosition = position.y;
 
-        if (theLevel[objPosition.y][objPosition.x] === undefined ||
-            theLevel[objPosition.y][objPosition.x] === true) {
+        var directions = gameObjects.getDirections();
+        objXPosition += speed * directions[direction].dx;
+        objYPosition += speed * directions[direction].dy;
+
+        if (theLevel[objYPosition][objXPosition] === 1) {
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     function animationFrame() {
@@ -36,10 +36,17 @@ var games = (function () {
             hasCrashedIntoWall = false,
             hasCrashedIntoItself = false;
 
-        theRenderer.eraseMovingObjects();        
-        thePlayer.move();       
-        theRenderer.renderPacMan(thePlayer);
-        requestAnimationFrame(animationFrame);
+        if (canMove(thePlayer.position, thePlayer.speed, thePlayer.direction)) {
+            thePlayer.move(thePlayer.speed);
+        }
+
+        thePlayer.svgForm.animate(
+            {
+                cx: 20 * (thePlayer.position.x + thePlayer.radius),
+                cy: 20 * (thePlayer.position.y + thePlayer.radius),
+                r: 20 * thePlayer.radius
+            }, 150);
+        window.setTimeout(animationFrame, 150);
     }
 
     Game.prototype.start = function () {
@@ -59,16 +66,24 @@ var games = (function () {
 
             switch (ev.keyCode) {
                 case 37:
-                    thePlayer.direction = 'left';
+                    if (canMove(thePlayer.position, thePlayer.speed, 'left')) {
+                        thePlayer.direction = 'left';
+                    }
                     break;
                 case 38:
-                    thePlayer.direction = 'up';
+                    if (canMove(thePlayer.position, thePlayer.speed, 'up')) {
+                        thePlayer.direction = 'up';
+                    }
                     break;
                 case 39:
-                    thePlayer.direction = 'right';
+                    if (canMove(thePlayer.position, thePlayer.speed, 'right')) {
+                        thePlayer.direction = 'right';
+                    }
                     break;
                 case 40:
-                    thePlayer.direction = 'down';
+                    if (canMove(thePlayer.position, thePlayer.speed, 'down')) {
+                        thePlayer.direction = 'down';
+                    }
                     break;
                 default:
                     break;
