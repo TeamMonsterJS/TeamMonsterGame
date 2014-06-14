@@ -132,6 +132,8 @@
             //console.log('fff -> ' + player.position.x);
             //this implement the act of collision
             player.collide(ghosts);
+            var audio = new Audio('..\sounds\pacman_beginnig.wav');
+            audio.play();
         }
         setInterval(movingPacMan, 10);
 
@@ -201,7 +203,8 @@
                         console.log(ghosts[ghosty].position.x);
                         
                     }
-                    console.log('---->' + player.position.x);
+                    //for testing how to obtain the coordinates of the pacman
+                    //console.log('---->' + player.position.x);
                     break;
             }
         }
