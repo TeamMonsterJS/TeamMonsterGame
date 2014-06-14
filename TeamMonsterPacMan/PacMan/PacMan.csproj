@@ -71,10 +71,17 @@
     <Content Include="images\ghost-9.png" />
     <Content Include="images\pac-man-enemies.jpg" />
     <Content Include="index.html" />
+<<<<<<< HEAD
     <Content Include="js\engine.js" />
+=======
+>>>>>>> refactoring
     <Content Include="js\game-objects.js" />
+    <Content Include="js\game.js" />
     <Content Include="js\levels.js" />
+    <Content Include="js\main.js" />
     <Content Include="js\menu.js" />
+    <Content Include="js\renderer.js" />
+    <Content Include="js\_reference.js" />
     <Content Include="scripts\kinetic.min.js" />
     <Content Include="scripts\raphael-min.js" />
     <Content Include="scripts\raphael.js" />
@@ -94,6 +101,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="JSLintNet.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
