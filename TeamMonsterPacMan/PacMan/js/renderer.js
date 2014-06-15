@@ -44,24 +44,14 @@ var renderers = (function () {
         return paper.path(["M", cx, cy, "L", x1, y1, "A", r, r, 0, +(endAngle - startAngle > 180), 0, x2, y2, "z"]);
     }
 
-    SVGRenderer.prototype.renderPacMan = function (pacMan) {
-
-        return sector(this.movingObjectsLayer,
-             20 * (pacMan.position.x + pacMan.radius),
-             20 * (pacMan.position.y + pacMan.radius),
-             20 * pacMan.radius,
-             120, 420).attr({
-                 stroke: 'red',
-                 fill: 'yellow'
-             });
-
-        //return this.movingObjectsLayer.circle(
-        //    20 * (pacMan.position.x + pacMan.radius),
-        //    20 * (pacMan.position.y + pacMan.radius),
-        //    20 * pacMan.radius).attr({
-        //        stroke: 'red',
-        //        fill: 'yellow'
-        //    });
+    SVGRenderer.prototype.renderPacMan = function (pacMan) {        
+        return this.movingObjectsLayer.circle(
+            20 * (pacMan.position.x + pacMan.radius),
+            20 * (pacMan.position.y + pacMan.radius),
+            20 * pacMan.radius).attr({
+                stroke: 'red',
+                fill: 'yellow'
+            });
     };
 
     SVGRenderer.prototype.returnSectorPath = function (cx, cy, r, startAngle, endAngle) {

@@ -135,10 +135,7 @@ var games = (function () {
         }
 
         if (canMove(thePlayer.position, thePlayer.speed, thePlayer.direction)) {
-            thePlayer.move(thePlayer.speed);
-            var transformationString = 'T' + 20 * directions[thePlayer.direction].dx + ' ' + 20 * directions[thePlayer.direction].dy;
-            var _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-            thePlayer.svgForm.animate({ path: _transformedPath }, 180);            
+            thePlayer.move(thePlayer.speed);           
         }
 
         for (i = 0; i < theGhosts.length; i += 1) {
@@ -169,15 +166,14 @@ var games = (function () {
             if (isPacManOnGhost(thePlayer, theGhosts) === false) {
                 currentGhost.move(currentGhost.speed);
             }
-        }                     
+        }                           
 
-
-        //thePlayer.svgForm.animate(
-        //   {
-        //       cx: 20 * (thePlayer.position.x + thePlayer.radius),
-        //       cy: 20 * (thePlayer.position.y + thePlayer.radius),
-        //       r: 20 * thePlayer.radius
-        //   }, 150);
+        thePlayer.svgForm.animate(
+           {
+               cx: 20 * (thePlayer.position.x + thePlayer.radius),
+               cy: 20 * (thePlayer.position.y + thePlayer.radius),
+               r: 20 * thePlayer.radius
+           }, 200);
 
         for (i = 0; i < theGhosts.length; i += 1) {
             theGhosts[i].svgForm.animate({
@@ -216,12 +212,8 @@ var games = (function () {
             theGame.over();
         }
 
-        var transformationString = 'T' + 20 * (14 - thePlayer.position.x) + ' ' + 20 * (22 - thePlayer.position.y);
-        var _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-        thePlayer.svgForm.animate({ path: _transformedPath }, 1000);
         thePlayer.position = { x: 14, y: 22 };
         thePlayer.direction = 'up';
-
 
         theGhosts[0].position = { x: 12, y: 14 };
         theGhosts[1].position = { x: 13, y: 14 };
@@ -249,85 +241,26 @@ var games = (function () {
         window.addEventListener('keydown', function (ev) {
             if (!ev) {
                 ev = window.event;
-            }
-
-            var rotaioinMiliseconds = 1,
-                transformationString,
-                _transformedPath
+            }           
 
             switch (ev.keyCode) {
-                case 37:
-                    if (thePlayer.direction == 'down') {
-                        transformationString = 'r 90';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    } else if (thePlayer.direction == 'up') {
-                        transformationString = 'r -90';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    } else if (thePlayer.direction == 'right') {
-                        transformationString = 'r -180';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    }
-
+                case 37:                    
                     if (canMove(thePlayer.position, thePlayer.speed, 'left')) {
                         thePlayer.direction = 'left';
                     }                    
                     break;
-                case 38:
-                    if (thePlayer.direction == 'down') {
-                        transformationString = 'r 180';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    } else if (thePlayer.direction == 'left') {
-                        transformationString = 'r 90';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    } else if (thePlayer.direction == 'right') {
-                        transformationString = 'r -90';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    }
-
+                case 38:                   
                     if (canMove(thePlayer.position, thePlayer.speed, 'up')) {
                         thePlayer.direction = 'up';
                     }
                     break;
-                case 39:
-                    if (thePlayer.direction == 'down') {
-                        transformationString = 'r -90';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    } else if (thePlayer.direction == 'left') {
-                        transformationString = 'r -180';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    } else if (thePlayer.direction == 'up') {
-                        transformationString = 'r 90';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    }
+                case 39:                   
 
                     if (canMove(thePlayer.position, thePlayer.speed, 'right')) {
                         thePlayer.direction = 'right';
                     }
                     break;
-                case 40:
-                    if (thePlayer.direction == 'right') {
-                        transformationString = 'r 90';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    } else if (thePlayer.direction == 'left') {
-                        transformationString = 'r -90';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    } else if (thePlayer.direction == 'up') {
-                        transformationString = 'r -180';
-                        _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-                        thePlayer.svgForm.animate({ path: _transformedPath }, rotaioinMiliseconds);
-                    }
-
+                case 40:                    
                     if (canMove(thePlayer.position, thePlayer.speed, 'down')) {
                         thePlayer.direction = 'down';
                     }
