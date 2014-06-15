@@ -138,7 +138,7 @@ var games = (function () {
             thePlayer.move(thePlayer.speed);
             var transformationString = 'T' + 20 * directions[thePlayer.direction].dx + ' ' + 20 * directions[thePlayer.direction].dy;
             var _transformedPath = Raphael.transformPath(theRenderer.returnStringPath(thePlayer.svgForm), transformationString);
-            thePlayer.svgForm.animate({ path: _transformedPath }, 150);            
+            thePlayer.svgForm.animate({ path: _transformedPath }, 180);            
         }
 
         for (i = 0; i < theGhosts.length; i += 1) {
@@ -183,7 +183,7 @@ var games = (function () {
             theGhosts[i].svgForm.animate({
                 x: 20 * theGhosts[i].position.x,
                 y: 20 * theGhosts[i].position.y
-            }, 150);
+            }, 200);
         }
     }
 
@@ -251,7 +251,7 @@ var games = (function () {
                 ev = window.event;
             }
 
-            var rotaioinMiliseconds = 5,
+            var rotaioinMiliseconds = 2,
                 transformationString,
                 _transformedPath
 
