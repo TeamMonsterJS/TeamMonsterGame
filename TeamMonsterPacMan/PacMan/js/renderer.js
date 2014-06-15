@@ -50,7 +50,7 @@ var renderers = (function () {
              20 * (pacMan.position.x + pacMan.radius),
              20 * (pacMan.position.y + pacMan.radius),
              20 * pacMan.radius,
-             30, 330).attr({
+             120, 420).attr({
                  stroke: 'red',
                  fill: 'yellow'
              });

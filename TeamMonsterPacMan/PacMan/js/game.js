@@ -251,7 +251,7 @@ var games = (function () {
                 ev = window.event;
             }
 
-            var rotaioinMiliseconds = 2,
+            var rotaioinMiliseconds = 1,
                 transformationString,
                 _transformedPath
 
