@@ -46,22 +46,37 @@ var renderers = (function () {
 
     SVGRenderer.prototype.renderPacMan = function (pacMan) {
 
-        //return sector(this.movingObjectsLayer,
-        //     20 * (pacMan.position.x + pacMan.radius),
-        //     20 * (pacMan.position.y + pacMan.radius),
-        //     20 * pacMan.radius,
-        //     30, 330).attr({
-        //         stroke: 'red',
-        //         fill: 'yellow'
-        //     });             
+        return sector(this.movingObjectsLayer,
+             20 * (pacMan.position.x + pacMan.radius),
+             20 * (pacMan.position.y + pacMan.radius),
+             20 * pacMan.radius,
+             30, 330).attr({
+                 stroke: 'red',
+                 fill: 'yellow'
+             });
 
-        return this.movingObjectsLayer.circle(
-            20 * (pacMan.position.x + pacMan.radius),
-            20 * (pacMan.position.y + pacMan.radius),
-            20 * pacMan.radius).attr({
-                stroke: 'red',
-                fill: 'yellow'
-            });
+        //return this.movingObjectsLayer.circle(
+        //    20 * (pacMan.position.x + pacMan.radius),
+        //    20 * (pacMan.position.y + pacMan.radius),
+        //    20 * pacMan.radius).attr({
+        //        stroke: 'red',
+        //        fill: 'yellow'
+        //    });
+    };
+
+    SVGRenderer.prototype.returnSectorPath = function (cx, cy, r, startAngle, endAngle) {
+        this.returnStringPath(sector(this.movingObjectsLayer, cx, cy, r, startAngle, endAngle));
+    };
+
+    SVGRenderer.prototype.returnStringPath = function (svgForm) {
+        var i,
+            path = '';
+
+        for (i = 0; i < svgForm.getPath().length; i++) {
+            path += svgForm.getPath()[i].join(' ') + ' ';
+        }
+
+        return path;
     };
 
     SVGRenderer.prototype.renderLevel = function (level) {

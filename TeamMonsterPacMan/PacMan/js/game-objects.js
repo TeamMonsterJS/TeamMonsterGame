@@ -230,7 +230,7 @@
     }
 
     PacMan.prototype = new MovingObject();
-    PacMan.prototype.constructor = PacMan;
+    PacMan.prototype.constructor = PacMan;    
 
     return {
         getPacMan: function (position, name, direction) {
