@@ -115,6 +115,8 @@ var renderers = (function () {
             'font-size': 60,
             fill: 'red'
         });
+        var soundItem = document.getElementById('idsounds');
+        soundItem.pause();
     };
 
     return {
