@@ -185,13 +185,7 @@
 
         if (level[this.position.y - this.speed][this.position.x] !== 1) {
             this.possibleDirections.push('up');
-        }
-
-        if (this.possibleDirections.length > 1) {
-            if (this.possibleDirections.indexOf(reverseDirection) !== -1) {
-                this.possibleDirections.splice(this.possibleDirections.indexOf(reverseDirection), 1);
-            }
-        }
+        }       
     };
 
     Ghost.prototype.checkPossibleTurns = function (level) {
