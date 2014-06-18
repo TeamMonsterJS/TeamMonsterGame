@@ -8,8 +8,7 @@
     "forin": true,
     "plusplus": true,
     "sloppy": true,
-    "vars": true,
-    "white": true
+    "vars": true
   },
   "runOnSave": true
 }

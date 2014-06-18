@@ -5,10 +5,8 @@
         pacman = gameObjects.getPacMan({ x: 14, y: 22 }, 'pesho', 'up'),
         ghosts = [],
         game,
-        menu = menus.getMenu('menu-container', 300, 250);
-
-    menu.draw();
-    menu.bindButtonEvents();
+        menu,
+        score = scores.getScore('score-container', 300, 200);    
 
     ghosts.push(gameObjects.getGhost({ x: 12, y: 14 }, 'left', 1));
     ghosts.push(gameObjects.getGhost({ x: 13, y: 14 }, 'up', 1));
@@ -23,13 +21,18 @@
     ghosts.push(gameObjects.getGhost({ x: 16, y: 13 }, 'up', 1));
     ghosts.push(gameObjects.getGhost({ x: 17, y: 13 }, 'left', 1));
 
-    game = games.get(renderer, level, pacman, ghosts);
+    game = games.get(renderer, level, pacman, ghosts, score);
+
     pacman.svgForm = renderer.renderPacMan(pacman);
 
     var i;
     for (i = 0; i < ghosts.length; i += 1) {
         ghosts[i].svgForm = renderer.renderGhost(ghosts[i]);
     }
+    
+    menu = menus.getMenu('menu-container', 300, 250);
+    menu.draw();
+    menu.bindEvents();    
     
     game.start();
 }());

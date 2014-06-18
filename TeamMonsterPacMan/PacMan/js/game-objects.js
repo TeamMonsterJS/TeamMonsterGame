@@ -158,18 +158,7 @@
     };
 
     Ghost.prototype.checkPossibleDirections = function (level) {
-        var reverseDirection;
-
         this.possibleDirections = [];
-        if (this.direction === 'left') {
-            reverseDirection = 'right';
-        } else if (this.direction === 'right') {
-            reverseDirection = 'left';
-        } else if (this.direction === 'up') {
-            reverseDirection = 'down';
-        } else if (this.direction === 'down') {
-            reverseDirection = 'up';
-        }
 
         if (level[this.position.y][this.position.x - this.speed] !== 1) {
             this.possibleDirections.push('left');
@@ -185,7 +174,7 @@
 
         if (level[this.position.y - this.speed][this.position.x] !== 1) {
             this.possibleDirections.push('up');
-        }       
+        }
     };
 
     Ghost.prototype.checkPossibleTurns = function (level) {
@@ -224,7 +213,7 @@
     }
 
     PacMan.prototype = new MovingObject();
-    PacMan.prototype.constructor = PacMan;    
+    PacMan.prototype.constructor = PacMan;
 
     return {
         getPacMan: function (position, name, direction) {

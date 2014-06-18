@@ -3,3 +3,4 @@
 /// <reference path="menu.js" />
 /// <reference path="game.js" />
 /// <reference path="levels.js" />
+/// <reference path="score.js" />

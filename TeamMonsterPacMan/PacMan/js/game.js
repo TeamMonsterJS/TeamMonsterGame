@@ -4,22 +4,24 @@ var games = (function () {
         thePlayer,
         theGhosts,
         theRenderer,
+        theScore,
         theLevel,
+        thePoints,
         theGhostRunnig,
         thePowerTicks,
         intervalID,
         directions = gameObjects.getDirections();
 
-    function Game(renderer, level, player, ghosts, pacDots) {
+    function Game(renderer, level, player, ghosts, score) {
         this.renderer = renderer;
         this.level = level;
         this.player = player;
-        this.ghosts = ghosts;
-        this.pacDots = pacDots;
+        this.ghosts = ghosts;        
         this.powerTicks = 0;
         this.ghostRunnig = false;
         this.bindKeyEvents();
-        this.score = 0;
+        this.score = score;
+        this.points = 0;
     }
 
     function canMove(position, speed, direction) {
@@ -124,6 +126,7 @@ var games = (function () {
         if (isPacManOnPacDot()) {
             theLevel[thePlayer.position.y][thePlayer.position.x] = 0;
             theRenderer.erasePacDot(thePlayer.position);
+            thePoints += 1;
         }
 
         if (isPacManOnPowerDot()) {
@@ -192,6 +195,9 @@ var games = (function () {
         thePowerTicks = this.powerTicks;
         theGhostRunnig = this.ghostRunnig;
         theRenderer.renderLevel(this.level);
+        theScore = this.score;
+        thePoints = this.points;
+        this.score.draw();
         intervalID = window.setInterval(animationFrame, 200);
     };
 
@@ -207,7 +213,8 @@ var games = (function () {
         theGame.stop();
 
         thePlayer.lives -= 1;
-
+        theScore.deleteHeart();
+        
         if (thePlayer.lives < 0) {
             theGame.over();
         }
@@ -233,6 +240,7 @@ var games = (function () {
 
     Game.prototype.over = function () {
         window.clearInterval(intervalID);
+        theScore.changeScore(thePoints);
         theRenderer.eraseMovingObjects();
         theRenderer.writeGameOver();
     };
@@ -275,8 +283,8 @@ var games = (function () {
     };
 
     return {
-        get: function (renderer, level, player, ghosts) {
-            return new Game(renderer, level, player, ghosts);
+        get: function (renderer, level, player, ghosts, score) {
+            return new Game(renderer, level, player, ghosts, score);
         }
     };
 }());

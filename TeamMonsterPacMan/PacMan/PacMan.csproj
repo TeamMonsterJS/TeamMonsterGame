@@ -78,6 +78,7 @@
     <Content Include="js\menu.js" />
     <Content Include="js\renderer.js" />
     <Content Include="js\_reference.js" />
+    <Content Include="scripts\jquery-2.1.1.min.js" />
     <Content Include="scripts\kinetic.min.js" />
     <Content Include="scripts\raphael-min.js" />
     <Content Include="scripts\raphael.js" />
