@@ -78,7 +78,7 @@ var games = (function () {
         }
     }
 
-    function makeGhostOrange() {
+    function makeGhostsOrange() {
         theRenderer.eraseMovingObjects();
         thePlayer.svgForm = theRenderer.renderPacMan(thePlayer);
         var i;
@@ -99,51 +99,9 @@ var games = (function () {
         }
     }
 
-    function animationFrame() {
-        var gameOver = false,
-            currentGhost,
-            i;
-
-        if (theGhostRunnig && thePowerTicks > 0) {
-            thePowerTicks--;
-        } else if (theGhostRunnig && thePowerTicks === 0) {
-            theGhostRunnig = false;
-            makeGhostOrange();
-        }
-
-        if (isPacManOnGhost(thePlayer, theGhosts)) {
-            if (theGhostRunnig) {
-                currentGhost = getCaughtGhost();
-                currentGhost.position = { x: 14, y: 14 };
-                currentGhost.svgForm.animate({
-                    x: 20 * 14,
-                    y: 20 * 14
-                }, 150);
-            } else {
-                theGame.restart();
-            }
-        }
-
-        if (isPacManOnPacDot()) {
-            theLevel[thePlayer.position.y][thePlayer.position.x] = 0;
-            theRenderer.erasePacDot(thePlayer.position);
-            thePoints += 1;
-            theScore.changeScore(thePoints);
-        }
-
-        if (isPacManOnPowerDot()) {
-            theLevel[thePlayer.position.y][thePlayer.position.x] = 0;
-            theRenderer.erasePacDot(thePlayer.position);
-            theGhostRunnig = true;
-            thePowerTicks = 100;
-            makeGhostsBlue();
-            thePoints += 10;
-            theScore.changeScore(thePoints);
-        }
-
-        if (canMove(thePlayer.position, thePlayer.speed, thePlayer.direction)) {
-            thePlayer.move(thePlayer.speed);
-        }
+    function processGhostsMovement() {
+        var i,
+            currentGhost;
 
         for (i = 0; i < theGhosts.length; i += 1) {
             currentGhost = theGhosts[i];
@@ -174,13 +132,72 @@ var games = (function () {
                 currentGhost.move(currentGhost.speed);
             }
         }
+    }
 
-        thePlayer.svgForm.animate(
-           {
-               cx: 20 * (thePlayer.position.x + thePlayer.radius),
-               cy: 20 * (thePlayer.position.y + thePlayer.radius),
-               r: 20 * thePlayer.radius
-           }, 200);
+    function animationFrame() {
+        var currentGhost,
+            i;
+
+        if (theGhostRunnig && thePowerTicks > 0) {
+            if (thePowerTicks === 12) {
+                makeGhostsOrange();
+            } else if (thePowerTicks === 9) {
+                makeGhostsBlue();
+            } else if (thePowerTicks === 6) {
+                makeGhostsOrange();
+            } else if (thePowerTicks === 3) {
+                makeGhostsBlue();
+            }
+            thePowerTicks--;
+        } else if (theGhostRunnig && thePowerTicks === 0) {
+            theGhostRunnig = false;
+            makeGhostsOrange();
+        }
+
+        if (isPacManOnGhost(thePlayer, theGhosts)) {
+            if (theGhostRunnig) {
+                thePoints += 100;
+                theScore.changeScore(thePoints);
+                scores.change
+                currentGhost = getCaughtGhost();
+                currentGhost.position = { x: 14, y: 14 };
+                currentGhost.svgForm.animate({
+                    x: 20 * 14,
+                    y: 20 * 14
+                }, 150);
+            } else {
+                theGame.restart();
+            }
+        }
+
+        if (isPacManOnPacDot()) {
+            theLevel[thePlayer.position.y][thePlayer.position.x] = 0;
+            theRenderer.erasePacDot(thePlayer.position);
+            thePoints += 1;
+            theScore.changeScore(thePoints);
+        }
+
+        if (isPacManOnPowerDot()) {
+            theLevel[thePlayer.position.y][thePlayer.position.x] = 0;
+            theRenderer.erasePacDot(thePlayer.position);
+            theGhostRunnig = true;
+            thePowerTicks = 100;
+            makeGhostsBlue();
+            thePoints += 50;
+            theScore.changeScore(thePoints);
+        }
+
+        if (canMove(thePlayer.position, thePlayer.speed, thePlayer.direction)) {
+            thePlayer.move(thePlayer.speed);
+        }
+
+        processGhostsMovement();
+
+        thePlayer.svgForm.animate({
+            cx: 20 * (thePlayer.position.x + thePlayer.radius),
+            cy: 20 * (thePlayer.position.y + thePlayer.radius),
+            r: 20 * thePlayer.radius
+        }, 200);
 
         for (i = 0; i < theGhosts.length; i += 1) {
             theGhosts[i].svgForm.animate({
@@ -203,6 +220,13 @@ var games = (function () {
             theScore = this.score;
             thePoints = this.points;
             this.score.draw();
+
+            thePlayer.svgForm = theRenderer.renderPacMan(thePlayer);
+            var i;
+            for (i = 0; i < theGhosts.length; i += 1) {
+                theGhosts[i].svgForm = theRenderer.renderGhost(theGhosts[i]);
+            }
+
             intervalID = window.setInterval(animationFrame, 200);
             this.isStarted = true;
         }

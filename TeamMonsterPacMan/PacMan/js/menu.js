@@ -1,4 +1,5 @@
-﻿var menus = (function myfunction() {
+﻿/// <reference path="_reference.js" />
+var menus = (function myfunction() {
     function Menu(container, width, height, game) {
         this.game = game;
         this.stage = new Kinetic.Stage({
