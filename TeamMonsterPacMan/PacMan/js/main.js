@@ -6,7 +6,7 @@
         ghosts = [],
         game,
         menu,
-        score = scores.getScore('score-container', 300, 200);    
+        score = scores.getScore('score-container', 300, 200);
 
     ghosts.push(gameObjects.getGhost({ x: 12, y: 14 }, 'left', 1));
     ghosts.push(gameObjects.getGhost({ x: 13, y: 14 }, 'up', 1));
@@ -29,10 +29,8 @@
     for (i = 0; i < ghosts.length; i += 1) {
         ghosts[i].svgForm = renderer.renderGhost(ghosts[i]);
     }
-    
-    menu = menus.getMenu('menu-container', 300, 250);
+
+    menu = menus.getMenu('menu-container', 200, 180, game);
     menu.draw();
-    menu.bindEvents();    
-    
-    game.start();
+    menu.bindEvents();
 }());

@@ -101,7 +101,7 @@ var renderers = (function () {
     };
 
     SVGRenderer.prototype.writeGameOver = function () {
-        this.fieldLayer.text(270, 270, 'Game Over').attr({
+        this.movingObjectsLayer.text(270, 270, 'Game Over').attr({
             'font-size': 60,
             fill: 'red'
         });

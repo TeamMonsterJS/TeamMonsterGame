@@ -20,18 +20,27 @@
             strokeWidth: 15
         });
 
+        this.newGameButton = new Kinetic.Text({
+            x: 20,
+            y: 30,
+            text: 'NEW GAME',
+            fontSize: 30,
+            fill: '#A3A000',
+            fontFamily: 'Fixedsys'
+        });
+
         this.startButton = new Kinetic.Text({
             x: 20,
             y: 80,
-            text: 'START',
+            text: 'RESUME',
             fontSize: 30,
             fill: '#A3A000',
             fontFamily: 'Fixedsys'
         });
 
         this.pauseButton = new Kinetic.Text({
-            x: 150,
-            y: 80,
+            x: 20,
+            y: 130,
             text: 'PAUSE',
             fontSize: 30,
             fill: '#A3A000',
@@ -41,6 +50,7 @@
 
     Menu.prototype.draw = function () {
         this.group.add(this.base);
+        this.group.add(this.newGameButton);
         this.group.add(this.startButton);
         this.group.add(this.pauseButton);
         this.layer.add(this.group);
@@ -49,6 +59,20 @@
 
     Menu.prototype.bindEvents = function () {
         var self = this;
+
+        this.newGameButton.on('mouseover', function () {
+            this.fill('black');
+            self.stage.draw();
+        });
+
+        this.newGameButton.on('mouseout', function () {
+            this.fill('#A3A000');
+            self.stage.draw();
+        });
+
+        this.newGameButton.on('click', function () {
+            self.game.start();
+        });
 
         this.startButton.on('mouseover', function () {
             this.fill('black');
@@ -60,6 +84,10 @@
             self.stage.draw();
         });
 
+        this.startButton.on('click', function () {
+            self.game.run();
+        });
+
         this.pauseButton.on('mouseover', function () {
             this.fill('black');
             self.stage.draw();
@@ -68,6 +96,10 @@
         this.pauseButton.on('mouseout', function () {
             this.fill('#A3A000');
             self.stage.draw();
+        });
+
+        this.pauseButton.on('click', function () {
+            self.game.stop();
         });
     };
 

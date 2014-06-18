@@ -16,12 +16,13 @@ var games = (function () {
         this.renderer = renderer;
         this.level = level;
         this.player = player;
-        this.ghosts = ghosts;        
+        this.ghosts = ghosts;
         this.powerTicks = 0;
         this.ghostRunnig = false;
         this.bindKeyEvents();
         this.score = score;
         this.points = 0;
+        this.isStarted = false;
     }
 
     function canMove(position, speed, direction) {
@@ -119,7 +120,7 @@ var games = (function () {
                     y: 20 * 14
                 }, 150);
             } else {
-                theGame.restart();                
+                theGame.restart();
             }
         }
 
@@ -127,6 +128,7 @@ var games = (function () {
             theLevel[thePlayer.position.y][thePlayer.position.x] = 0;
             theRenderer.erasePacDot(thePlayer.position);
             thePoints += 1;
+            theScore.changeScore(thePoints);
         }
 
         if (isPacManOnPowerDot()) {
@@ -135,10 +137,12 @@ var games = (function () {
             theGhostRunnig = true;
             thePowerTicks = 100;
             makeGhostsBlue();
+            thePoints += 10;
+            theScore.changeScore(thePoints);
         }
 
         if (canMove(thePlayer.position, thePlayer.speed, thePlayer.direction)) {
-            thePlayer.move(thePlayer.speed);           
+            thePlayer.move(thePlayer.speed);
         }
 
         for (i = 0; i < theGhosts.length; i += 1) {
@@ -169,7 +173,7 @@ var games = (function () {
             if (isPacManOnGhost(thePlayer, theGhosts) === false) {
                 currentGhost.move(currentGhost.speed);
             }
-        }                           
+        }
 
         thePlayer.svgForm.animate(
            {
@@ -187,18 +191,21 @@ var games = (function () {
     }
 
     Game.prototype.start = function () {
-        theGame = this;
-        thePlayer = this.player;
-        theRenderer = this.renderer;
-        theLevel = this.level;
-        theGhosts = this.ghosts;
-        thePowerTicks = this.powerTicks;
-        theGhostRunnig = this.ghostRunnig;
-        theRenderer.renderLevel(this.level);
-        theScore = this.score;
-        thePoints = this.points;
-        this.score.draw();
-        intervalID = window.setInterval(animationFrame, 200);
+        if (!this.isStarted) {
+            theGame = this;
+            thePlayer = this.player;
+            theRenderer = this.renderer;
+            theLevel = this.level;
+            theGhosts = this.ghosts;
+            thePowerTicks = this.powerTicks;
+            theGhostRunnig = this.ghostRunnig;
+            theRenderer.renderLevel(this.level);
+            theScore = this.score;
+            thePoints = this.points;
+            this.score.draw();
+            intervalID = window.setInterval(animationFrame, 200);
+            this.isStarted = true;
+        }
     };
 
     Game.prototype.stop = function () {
@@ -214,7 +221,7 @@ var games = (function () {
 
         thePlayer.lives -= 1;
         theScore.deleteHeart();
-        
+
         if (thePlayer.lives < 0) {
             theGame.over();
         }
@@ -235,12 +242,11 @@ var games = (function () {
         theGhosts[10].position = { x: 16, y: 13 };
         theGhosts[11].position = { x: 17, y: 13 };
 
-        window.setTimeout(theGame.run(), 2000);        
+        window.setTimeout(theGame.run(), 2000);
     };
 
     Game.prototype.over = function () {
         window.clearInterval(intervalID);
-        theScore.changeScore(thePoints);
         theRenderer.eraseMovingObjects();
         theRenderer.writeGameOver();
     };
@@ -249,26 +255,26 @@ var games = (function () {
         window.addEventListener('keydown', function (ev) {
             if (!ev) {
                 ev = window.event;
-            }           
+            }
 
             switch (ev.keyCode) {
-                case 37:                    
+                case 37:
                     if (canMove(thePlayer.position, thePlayer.speed, 'left')) {
                         thePlayer.direction = 'left';
-                    }                    
+                    }
                     break;
-                case 38:                   
+                case 38:
                     if (canMove(thePlayer.position, thePlayer.speed, 'up')) {
                         thePlayer.direction = 'up';
                     }
                     break;
-                case 39:                   
+                case 39:
 
                     if (canMove(thePlayer.position, thePlayer.speed, 'right')) {
                         thePlayer.direction = 'right';
                     }
                     break;
-                case 40:                    
+                case 40:
                     if (canMove(thePlayer.position, thePlayer.speed, 'down')) {
                         thePlayer.direction = 'down';
                     }

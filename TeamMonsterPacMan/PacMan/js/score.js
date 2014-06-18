@@ -21,7 +21,7 @@ var scores = (function () {
         this.scoreBoard = new Kinetic.Text({
             x: this.base.x() + 15,
             y: this.base.y() + 20,
-            text: 'Final score',
+            text: 'Current score',
             fontSize: 30,
             fill: '#A3A000',
             fontFamily: 'Fixedsys'
@@ -106,9 +106,8 @@ var scores = (function () {
     };
 
     Score.prototype.changeScore = function (points) {
-        this.layer.removeChildren();
         this.scoreCount.setText(String(points));
-        this.layer.add(this.scoreCount);
+        this.stage.draw();
     };
 
     return {
