@@ -23,6 +23,21 @@ var games = (function () {
         this.score = score;
         this.points = 0;
         this.isStarted = false;
+        this.isPaused = false;
+    }
+
+    function pacmanCanMove(position, speed, direction) {
+        var objXPosition = position.x,
+            objYPosition = position.y;
+
+        objXPosition += speed * directions[direction].dx;
+        objYPosition += speed * directions[direction].dy;
+
+        if (theLevel[objYPosition][objXPosition] === 1 || theLevel[objYPosition][objXPosition] === 4) {
+            return false;
+        }
+
+        return true;
     }
 
     function canMove(position, speed, direction) {
@@ -158,7 +173,6 @@ var games = (function () {
             if (theGhostRunnig) {
                 thePoints += 100;
                 theScore.changeScore(thePoints);
-                scores.change
                 currentGhost = getCaughtGhost();
                 currentGhost.position = { x: 14, y: 14 };
                 currentGhost.svgForm.animate({
@@ -187,7 +201,7 @@ var games = (function () {
             theScore.changeScore(thePoints);
         }
 
-        if (canMove(thePlayer.position, thePlayer.speed, thePlayer.direction)) {
+        if (pacmanCanMove(thePlayer.position, thePlayer.speed, thePlayer.direction)) {
             thePlayer.move(thePlayer.speed);
         }
 
@@ -234,10 +248,14 @@ var games = (function () {
 
     Game.prototype.stop = function () {
         window.clearInterval(intervalID);
+        this.isPaused = true;
     };
 
     Game.prototype.run = function () {
-        intervalID = window.setInterval(animationFrame, 200);
+        if (this.isPaused) {
+            intervalID = window.setInterval(animationFrame, 200);
+            this.isPaused = false;
+        }
     };
 
     Game.prototype.restart = function () {
@@ -246,12 +264,12 @@ var games = (function () {
         thePlayer.lives -= 1;
         theScore.deleteHeart();
 
+        thePlayer.position = { x: 14, y: 22 };
+        thePlayer.direction = 'up';
+
         if (thePlayer.lives < 0) {
             theGame.over();
         }
-
-        thePlayer.position = { x: 14, y: 22 };
-        thePlayer.direction = 'up';
 
         theGhosts[0].position = { x: 12, y: 14 };
         theGhosts[1].position = { x: 13, y: 14 };
@@ -283,23 +301,23 @@ var games = (function () {
 
             switch (ev.keyCode) {
                 case 37:
-                    if (canMove(thePlayer.position, thePlayer.speed, 'left')) {
+                    if (pacmanCanMove(thePlayer.position, thePlayer.speed, 'left')) {
                         thePlayer.direction = 'left';
                     }
                     break;
                 case 38:
-                    if (canMove(thePlayer.position, thePlayer.speed, 'up')) {
+                    if (pacmanCanMove(thePlayer.position, thePlayer.speed, 'up')) {
                         thePlayer.direction = 'up';
                     }
                     break;
                 case 39:
 
-                    if (canMove(thePlayer.position, thePlayer.speed, 'right')) {
+                    if (pacmanCanMove(thePlayer.position, thePlayer.speed, 'right')) {
                         thePlayer.direction = 'right';
                     }
                     break;
                 case 40:
-                    if (canMove(thePlayer.position, thePlayer.speed, 'down')) {
+                    if (pacmanCanMove(thePlayer.position, thePlayer.speed, 'down')) {
                         thePlayer.direction = 'down';
                     }
                     break;
