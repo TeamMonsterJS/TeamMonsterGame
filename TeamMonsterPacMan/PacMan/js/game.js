@@ -103,7 +103,7 @@ var games = (function () {
 
         if (theGhostRunnig && thePowerTicks > 0) {
             thePowerTicks--;
-        } else if (theGhostRunnig && thePowerTicks == 0) {
+        } else if (theGhostRunnig && thePowerTicks === 0) {
             theGhostRunnig = false;
             makeGhostOrange();
         }

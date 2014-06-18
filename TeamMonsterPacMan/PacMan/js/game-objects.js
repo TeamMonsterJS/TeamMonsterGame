@@ -101,21 +101,21 @@
     };
 
     Ghost.prototype.isRunningAgainsPacman = function (pacman) {
-        if (this.position.y == pacman.position.y &&
+        if (this.position.y === pacman.position.y &&
             this.position.x < pacman.position.x &&
-            this.direction == 'right') {
+            this.direction === 'right') {
             return true;
         } else if (this.position.y == pacman.position.y &&
             this.position.x > pacman.position.x &&
-            this.direction == 'left') {
+            this.direction === 'left') {
             return true;
         } else if (this.position.x == pacman.position.x &&
             this.position.y < pacman.position.y &&
-            this.direction == 'down') {
+            this.direction === 'down') {
             return true;
         } else if (this.position.x == pacman.position.x &&
             this.position.y > pacman.position.y &&
-            this.direction == 'up') {
+            this.direction === 'up') {
             return true;
         }
 
@@ -155,7 +155,7 @@
                 Math.floor(Math.random() * this.possibleDirections.length)
             ];
         }
-    }
+    };
 
     Ghost.prototype.checkPossibleDirections = function (level) {
         var reverseDirection;

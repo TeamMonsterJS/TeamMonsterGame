@@ -4,7 +4,11 @@
         renderer = renderers.getSVGRenderer(0, 0, 560, 560),
         pacman = gameObjects.getPacMan({ x: 14, y: 22 }, 'pesho', 'up'),
         ghosts = [],
-        game;
+        game,
+        menu = menus.getMenu('menu-container', 300, 250);
+
+    menu.draw();
+    menu.bindButtonEvents();
 
     ghosts.push(gameObjects.getGhost({ x: 12, y: 14 }, 'left', 1));
     ghosts.push(gameObjects.getGhost({ x: 13, y: 14 }, 'up', 1));
@@ -26,6 +30,6 @@
     for (i = 0; i < ghosts.length; i += 1) {
         ghosts[i].svgForm = renderer.renderGhost(ghosts[i]);
     }
-
-    game.start();        
+    
+    game.start();
 }());
