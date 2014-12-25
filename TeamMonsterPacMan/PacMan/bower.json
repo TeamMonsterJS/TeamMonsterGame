@@ -1,9 +1,10 @@
 {
-  "name": "scripts",
-  "version": "0.0.0",
+  "name": "Pacman",
+  "version": "0.0.1",
   "homepage": "https://github.com/TeamMonsterJS/TeamMonsterGame",
   "authors": [
-    "Yasen <ias_sv_bg@yahoo.co.uk>"
+    "Yasen <ias_sv_bg@yahoo.co.uk>",
+    "svilenbonev"
   ],
   "license": "MIT",
   "ignore": [
@@ -12,5 +13,9 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "kineticjs": "~5.1.0",
+    "raphael": "~2.1.2"
+  }
 }
